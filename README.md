@@ -36,6 +36,17 @@ ng build
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
+## Environment variables
+
+Angular's application builder exposes build-time variables prefixed with `NG_APP_`. Create a `.env` file (or add variables in your hosting provider such as Vercel) and provide the API base URL that matches the environment where the frontend will run:
+
+```bash
+# .env
+NG_APP_API_BASE_URL="http://localhost:3000/api"
+```
+
+When deploying to Vercel, define `NG_APP_API_BASE_URL` inside the Project Settings → Environment Variables so production builds automatically point at the hosted API.
+
 ## Running unit tests
 
 To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:

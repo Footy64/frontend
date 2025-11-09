@@ -1,4 +1,7 @@
+const resolvedBaseApi =
+  import.meta.env.NG_APP_API_BASE_URL ?? 'http://localhost:3000/api';
+
 export const environment = {
-  baseApi: "http://localhost:3000/api",
+  baseApi: resolvedBaseApi,
   production: false,
 };
