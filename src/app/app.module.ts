@@ -4,6 +4,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {CoreModule} from "./core/core.module";
+import {provideHttpClient, withInterceptors} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,9 @@ import {CoreModule} from "./core/core.module";
     AppRoutingModule,
     CoreModule
   ],
-  providers: [],
+  providers: [
+    provideHttpClient(withInterceptors([]))
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
