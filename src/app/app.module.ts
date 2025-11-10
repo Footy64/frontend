@@ -5,10 +5,12 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {CoreModule} from "./core/core.module";
 import {provideHttpClient, withInterceptors} from '@angular/common/http';
+import {HomeViewComponent} from './features/home/home-view/home-view.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeViewComponent
   ],
   imports: [
     BrowserModule,
