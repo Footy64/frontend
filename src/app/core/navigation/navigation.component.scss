@@ -1,3 +1,16 @@
+:host {
+  display: block;
+}
+
 .footy-navlink {
-  @apply hover:text-teal-800 transition duration-200;
+  @apply relative inline-flex items-center justify-center rounded-xl px-4 py-2 transition duration-200;
+  @apply text-slate-200 hover:text-white hover:bg-white/5;
+
+  &.active {
+    @apply text-white bg-white/10 shadow-lg shadow-emerald-500/20;
+  }
+
+  &.cta {
+    @apply bg-emerald-500 text-slate-900 font-semibold shadow-lg shadow-emerald-500/40 hover:bg-emerald-400 hover:text-slate-900;
+  }
 }

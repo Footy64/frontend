@@ -7,5 +7,5 @@ import {Component} from '@angular/core';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'frontend';
+  readonly currentYear = new Date().getFullYear();
 }

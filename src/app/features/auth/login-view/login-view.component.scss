@@ -1,0 +1,88 @@
+:host {
+  display: block;
+}
+
+.auth-hero {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.18), transparent 55%),
+    linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(2, 6, 23, 0.95));
+  isolation: isolate;
+  color: white;
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(45, 212, 191, 0.1), transparent 60%);
+    opacity: 0.9;
+    pointer-events: none;
+  }
+
+  &__glow {
+    position: absolute;
+    inset-inline: 15%;
+    inset-block-end: -20%;
+    height: 320px;
+    filter: blur(120px);
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.45), transparent 70%);
+    z-index: -1;
+  }
+}
+
+.auth-social {
+  @apply inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/10 px-4 py-2.5 text-xs font-medium uppercase tracking-wide text-white transition;
+
+  &:hover,
+  &:focus-visible {
+    @apply border-emerald-400/70 bg-white/20 text-emerald-200 outline-none;
+  }
+
+  &__icon {
+    @apply flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-emerald-200;
+  }
+}
+
+.input-wrapper {
+  @apply relative flex items-center;
+
+  input {
+    @apply pl-11 pr-12;
+  }
+
+  &__icon {
+    @apply absolute inset-y-0 left-0 flex w-11 items-center justify-center text-emerald-200;
+  }
+
+  &__action {
+    @apply absolute inset-y-0 right-1 flex items-center justify-center rounded-full p-2 text-slate-300 transition hover:text-emerald-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300;
+  }
+}
+
+.floating-card {
+  position: absolute;
+  top: -2.5rem;
+  right: -4rem;
+  transform: translateY(0);
+  animation: float 8s ease-in-out infinite;
+  width: min(220px, 90vw);
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-8px) translateX(4px);
+  }
+}
+
+@media (max-width: 1023px) {
+  .floating-card {
+    display: none;
+  }
+
+  .input-wrapper input {
+    @apply pl-11 pr-11;
+  }
+}

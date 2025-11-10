@@ -1,5 +1,15 @@
-<app-navigation></app-navigation>
-
-<div class="h-[92vh] p-12">
-  <router-outlet></router-outlet>
+<div class="min-h-screen bg-slate-950 text-slate-100">
+  <app-navigation></app-navigation>
+  <main class="min-h-[calc(100vh-5rem)]">
+    <router-outlet></router-outlet>
+  </main>
+  <footer class="border-t border-white/10 bg-slate-950/80 py-8">
+    <div class="mx-auto flex max-w-6xl flex-col gap-4 px-4 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+      <p>© {{ currentYear }} Footy. Tous droits réservés.</p>
+      <div class="flex flex-wrap gap-4">
+        <a class="transition hover:text-emerald-300" href="#">Politique de confidentialité</a>
+        <a class="transition hover:text-emerald-300" href="#">Conditions d'utilisation</a>
+      </div>
+    </div>
+  </footer>
 </div>
