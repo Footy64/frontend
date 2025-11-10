@@ -1,0 +1,62 @@
+<div class="overview-grid">
+  <section class="card emphasis">
+    <div class="card__header">
+      <h2>Vos prochaines étapes</h2>
+      <p>Accédez rapidement aux actions courantes.</p>
+    </div>
+    <div class="quick-actions">
+      <a routerLink="../teams" class="quick-action">
+        <span class="quick-action__title">Créer une équipe</span>
+        <span class="quick-action__subtitle">Invitez vos coéquipiers et gérez votre effectif.</span>
+      </a>
+      <a routerLink="../matches" class="quick-action">
+        <span class="quick-action__title">Planifier un match</span>
+        <span class="quick-action__subtitle">Choisissez deux équipes, une date et un terrain.</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card__header">
+      <h3>Équipes</h3>
+      <a routerLink="../teams">Voir toutes les équipes</a>
+    </div>
+    <ng-container *ngIf="(isLoadingTeams$ | async); else teamsList">
+      <p class="muted">Chargement des équipes...</p>
+    </ng-container>
+    <ng-template #teamsList>
+      <ng-container *ngIf="(teams$ | async) as teams">
+        <p class="muted" *ngIf="!teams.length">Vous n'avez pas encore créé d'équipe.</p>
+        <ul *ngIf="teams.length" class="stack">
+          <li *ngFor="let team of teams | slice:0:3" class="stack__item">
+            <span class="stack__title">{{ team.name }}</span>
+            <span class="stack__meta">{{ team.members.length }} membre{{ team.members.length > 1 ? 's' : '' }}</span>
+          </li>
+        </ul>
+      </ng-container>
+    </ng-template>
+  </section>
+
+  <section class="card">
+    <div class="card__header">
+      <h3>Matchs à venir</h3>
+      <a routerLink="../matches">Gérer les matchs</a>
+    </div>
+    <ng-container *ngIf="(isLoadingMatches$ | async); else matchesList">
+      <p class="muted">Chargement des matchs...</p>
+    </ng-container>
+    <ng-template #matchesList>
+      <ng-container *ngIf="(matches$ | async) as matches">
+        <p class="muted" *ngIf="!matches.length">Aucun match programmé pour le moment.</p>
+        <ul *ngIf="matches.length" class="stack">
+          <li *ngFor="let match of matches | slice:0:3" class="stack__item">
+            <span class="stack__title">{{ match.homeTeam.name }} vs {{ match.awayTeam.name }}</span>
+            <span class="stack__meta">
+              {{ match.date | date: 'fullDate' }} • {{ match.place }}
+            </span>
+          </li>
+        </ul>
+      </ng-container>
+    </ng-template>
+  </section>
+</div>

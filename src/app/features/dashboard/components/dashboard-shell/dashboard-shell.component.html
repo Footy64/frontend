@@ -1,0 +1,44 @@
+<section class="dashboard">
+  <div class="dashboard__hero">
+    <div class="dashboard__hero-background"></div>
+    <div class="dashboard__hero-content">
+      <p class="dashboard__eyebrow">Tableau de bord</p>
+      <h1>Organisez vos compétitions en toute sérénité</h1>
+      <p>
+        <ng-container *ngIf="user$ | async as user; else guestWelcome">
+          Heureux de vous revoir, {{ user.displayName || user.email }} !
+        </ng-container>
+      </p>
+      <ng-template #guestWelcome>
+        Connectez-vous pour accéder à la gestion des équipes et des matchs.
+      </ng-template>
+    </div>
+    <ng-container *ngIf="(teams$ | async) as teams">
+      <ng-container *ngIf="(matches$ | async) as matches">
+        <div class="dashboard__hero-stats">
+          <div class="dashboard__stat">
+            <span class="dashboard__stat-value">{{ teams.length }}</span>
+            <span class="dashboard__stat-label">Équipes</span>
+          </div>
+          <div class="dashboard__stat">
+            <span class="dashboard__stat-value">{{ matches.length }}</span>
+            <span class="dashboard__stat-label">Matchs programmés</span>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+
+  <nav class="dashboard__tabs">
+    <a routerLink="overview" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">Vue d'ensemble</a>
+    <a routerLink="teams" routerLinkActive="is-active">Équipes</a>
+    <a routerLink="matches" routerLinkActive="is-active">Matchs</a>
+  </nav>
+
+  <div *ngIf="dataError" class="dashboard__error">
+    <p>{{ dataError }}</p>
+    <button type="button" (click)="refreshAll()">Réessayer</button>
+  </div>
+
+  <router-outlet></router-outlet>
+</section>

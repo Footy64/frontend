@@ -5,6 +5,10 @@ import {HomeViewComponent} from './features/home/home-view/home-view.component';
 const routes: Routes = [
   {path: '', component: HomeViewComponent, pathMatch: 'full'},
   {path: 'auth', loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule)},
+  {
+    path: 'dashboard',
+    loadChildren: () => import('./features/dashboard/dashboard.module').then(m => m.DashboardModule)
+  },
   {path: '**', redirectTo: ''}
 ];
 

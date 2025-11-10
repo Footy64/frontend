@@ -6,6 +6,7 @@ import {AppComponent} from './app.component';
 import {CoreModule} from "./core/core.module";
 import {provideHttpClient, withInterceptors} from '@angular/common/http';
 import {HomeViewComponent} from './features/home/home-view/home-view.component';
+import {authInterceptor} from './features/auth/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import {HomeViewComponent} from './features/home/home-view/home-view.component';
     CoreModule
   ],
   providers: [
-    provideHttpClient(withInterceptors([]))
+    provideHttpClient(withInterceptors([authInterceptor]))
   ],
   bootstrap: [AppComponent]
 })
