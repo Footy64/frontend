@@ -13,4 +13,8 @@
   &.cta {
     @apply bg-emerald-500 text-slate-900 font-semibold shadow-lg shadow-emerald-500/40 hover:bg-emerald-400 hover:text-slate-900;
   }
+
+  &.danger {
+    @apply border border-white/20 bg-transparent text-slate-200 hover:border-emerald-400 hover:text-white;
+  }
 }

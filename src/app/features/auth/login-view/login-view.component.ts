@@ -4,6 +4,7 @@ import {AuthService} from '../auth.service';
 import {Router} from '@angular/router';
 import {HttpErrorResponse} from '@angular/common/http';
 import {finalize} from 'rxjs';
+import {AuthStateService} from '../auth-state.service';
 
 type FeedbackState = {
   type: 'success' | 'error';
@@ -20,6 +21,7 @@ export class LoginViewComponent {
   private readonly fb: FormBuilder = inject(FormBuilder);
   private readonly authService: AuthService = inject(AuthService);
   private readonly router: Router = inject(Router);
+  private readonly authState: AuthStateService = inject(AuthStateService);
 
   isSubmitting = false;
   feedback: FeedbackState | null = null;
@@ -53,7 +55,18 @@ export class LoginViewComponent {
       .login(dto)
       .pipe(finalize(() => (this.isSubmitting = false)))
       .subscribe({
-        next: () => {
+        next: response => {
+          const remember = !!this.loginForm.value.rememberMe;
+          const sessionStored = this.authState.setSessionFromResponse(response, {remember});
+
+          if (!sessionStored) {
+            this.feedback = {
+              type: 'error',
+              message: 'Impossible de récupérer votre session. Merci de réessayer.'
+            };
+            return;
+          }
+
           this.feedback = {
             type: 'success',
             message: 'Connexion réussie ! Redirection vers votre tableau de bord.'

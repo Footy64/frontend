@@ -1,159 +1,42 @@
-<section class="relative overflow-hidden text-slate-100">
-  <div class="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.25),_transparent_60%)]"></div>
-  <div class="mx-auto flex max-w-6xl flex-col gap-16 px-4 py-24 sm:px-6 lg:px-8">
-    <div class="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-      <div class="space-y-6">
-        <span class="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-4 py-1 text-sm font-semibold text-emerald-300 ring-1 ring-emerald-500/30">
-          Plateforme communautaire de football
-        </span>
-        <h1 class="text-4xl font-bold leading-tight text-white sm:text-5xl">
-          Organisez vos matchs et vibrez avec votre équipe locale
-        </h1>
-        <p class="text-lg text-slate-200">
-          Footy simplifie la création de rencontres, la gestion des effectifs et la communication entre passionnés.
-          Retrouvez l'esprit collectif du ballon rond grâce à une expérience moderne, claire et mobile.
-        </p>
-        <div class="flex flex-col gap-3 sm:flex-row">
-          <a
-            class="inline-flex items-center justify-center rounded-xl bg-emerald-500 px-6 py-3 text-base font-semibold text-slate-900 shadow-lg shadow-emerald-500/40 transition hover:-translate-y-0.5 hover:bg-emerald-400"
-            routerLink="/auth/register"
-          >
-            Créer un compte gratuit
-          </a>
-          <a
-            class="inline-flex items-center justify-center rounded-xl border border-emerald-400/60 px-6 py-3 text-base font-semibold text-emerald-200 transition hover:-translate-y-0.5 hover:border-emerald-300 hover:text-white"
-            routerLink="/auth/login"
-          >
-            Se connecter
-          </a>
-        </div>
-      </div>
-      <div class="relative">
-        <div class="absolute inset-0 -z-10 translate-x-4 translate-y-4 rounded-3xl bg-emerald-500/20 blur-2xl"></div>
-        <div class="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur">
-          <div class="grid gap-6">
-            <div class="rounded-2xl border border-white/10 bg-slate-900/60 p-5">
-              <p class="text-sm uppercase tracking-widest text-emerald-300">Statistiques hebdomadaires</p>
-              <p class="mt-3 text-4xl font-semibold text-white">+48 matchs organisés</p>
-              <p class="mt-2 text-sm text-slate-300">Des rencontres amicales réparties sur toute la région.</p>
-            </div>
-            <div class="grid gap-4 sm:grid-cols-2">
-              <div class="rounded-2xl bg-slate-900/60 p-4">
-                <p class="text-3xl font-semibold text-white">320</p>
-                <p class="text-sm text-slate-300">Joueurs actifs cette semaine</p>
-              </div>
-              <div class="rounded-2xl bg-slate-900/60 p-4">
-                <p class="text-3xl font-semibold text-white">87%</p>
-                <p class="text-sm text-slate-300">Taux de participation confirmé</p>
-              </div>
-            </div>
-            <div class="rounded-2xl border border-emerald-400/40 bg-emerald-500/10 p-5 text-sm text-emerald-100">
-              « Grâce à Footy, on joue toutes les semaines sans prise de tête.
-              Les convocations automatiques nous ont changé la vie ! »
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid gap-8 rounded-3xl border border-white/10 bg-white/5 p-8 shadow-lg backdrop-blur sm:grid-cols-2 lg:grid-cols-4">
-      <div class="space-y-3">
-        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/20 text-emerald-300">
-          <span class="text-2xl">⚽</span>
-        </div>
-        <h3 class="text-xl font-semibold text-white">Matchs express</h3>
-        <p class="text-sm text-slate-300">Créez une rencontre en quelques clics et invitez instantanément vos contacts.</p>
-      </div>
-      <div class="space-y-3">
-        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/20 text-emerald-300">
-          <span class="text-2xl">🤝</span>
-        </div>
-        <h3 class="text-xl font-semibold text-white">Groupes privés</h3>
-        <p class="text-sm text-slate-300">Rassemblez votre équipe, partagez des messages et suivez la motivation de chacun.</p>
-      </div>
-      <div class="space-y-3">
-        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/20 text-emerald-300">
-          <span class="text-2xl">📍</span>
-        </div>
-        <h3 class="text-xl font-semibold text-white">Terrains favoris</h3>
-        <p class="text-sm text-slate-300">Sauvegardez vos lieux préférés avec disponibilité et temps de trajet estimé.</p>
-      </div>
-      <div class="space-y-3">
-        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/20 text-emerald-300">
-          <span class="text-2xl">📊</span>
-        </div>
-        <h3 class="text-xl font-semibold text-white">Statistiques claires</h3>
-        <p class="text-sm text-slate-300">Suivez les performances et l'assiduité pour créer des matchs équilibrés.</p>
-      </div>
-    </div>
-
-    <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
-      <div class="space-y-4">
-        <p class="text-sm font-semibold uppercase tracking-[0.3em] text-emerald-300">Une routine simple</p>
-        <h2 class="text-3xl font-bold text-white sm:text-4xl">Comment Footy dynamise votre club</h2>
-        <p class="text-base text-slate-200">
-          De la planification à la célébration, Footy vous accompagne à chaque étape pour donner envie de chausser les crampons.
-        </p>
-        <ul class="space-y-4 text-sm text-slate-300">
-          <li class="flex gap-3">
-            <span class="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-300">1</span>
-            <div>
-              <p class="font-semibold text-white">Planifiez en ligne</p>
-              <p class="text-sm text-slate-300">Choisissez le lieu, la date et invitez l'équipe en moins de deux minutes.</p>
-            </div>
-          </li>
-          <li class="flex gap-3">
-            <span class="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-300">2</span>
-            <div>
-              <p class="font-semibold text-white">Confirmez les effectifs</p>
-              <p class="text-sm text-slate-300">Suivez les réponses en temps réel, répartissez les équipes et gérez les remplaçants.</p>
-            </div>
-          </li>
-          <li class="flex gap-3">
-            <span class="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-300">3</span>
-            <div>
-              <p class="font-semibold text-white">Partagez les moments forts</p>
-              <p class="text-sm text-slate-300">Publiez les résultats, photos et tops de la semaine pour motiver tout le monde.</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div class="grid gap-6 rounded-3xl border border-white/10 bg-white/5 p-8 shadow-xl backdrop-blur">
-        <div class="rounded-2xl bg-slate-900/60 p-6">
-          <p class="text-lg font-semibold text-white">"Une interface fluide qui a boosté la cohésion de notre club d'entreprise."</p>
-          <p class="mt-4 text-sm text-slate-400">Camille, capitaine des Tigres du Vendredi</p>
-        </div>
-        <div class="rounded-2xl bg-slate-900/60 p-6">
-          <p class="text-lg font-semibold text-white">"Fini les groupes dispersés, on gère tout depuis Footy et on gagne du temps."</p>
-          <p class="mt-4 text-sm text-slate-400">Alexandre, responsable associatif</p>
-        </div>
-        <div class="rounded-2xl bg-slate-900/60 p-6">
-          <p class="text-lg font-semibold text-white">"Le suivi des présences nous aide à équilibrer les matchs et à impliquer tout le monde."</p>
-          <p class="mt-4 text-sm text-slate-400">Sofia, coach des All-Stars</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="rounded-3xl border border-emerald-400/40 bg-emerald-500/10 p-10 text-center shadow-2xl backdrop-blur">
-      <h2 class="text-3xl font-semibold text-white sm:text-4xl">Prêt à transformer votre expérience footballistique ?</h2>
-      <p class="mx-auto mt-4 max-w-2xl text-base text-emerald-100">
-        Rejoignez gratuitement Footy, créez votre premier match et invitez vos partenaires de jeu.
-        En quelques minutes, tout votre collectif est synchronisé.
+<section class="landing">
+  <div class="landing__hero">
+    <div class="landing__content">
+      <p class="landing__eyebrow">Gestion sportive simplifiée</p>
+      <h1>Organisez vos équipes et vos matchs en quelques clics</h1>
+      <p>
+        Footy Manager vous accompagne pour créer vos équipes, planifier vos rencontres et suivre les scores sans
+        feuilleter des tableurs interminables.
       </p>
-      <div class="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-        <a
-          class="inline-flex items-center justify-center rounded-xl bg-white px-6 py-3 text-base font-semibold text-slate-900 shadow-lg shadow-emerald-500/30 transition hover:-translate-y-0.5 hover:bg-slate-100"
-          routerLink="/auth/register"
-        >
-          Lancer Footy maintenant
-        </a>
-        <a
-          class="inline-flex items-center justify-center rounded-xl border border-white/60 px-6 py-3 text-base font-semibold text-white transition hover:-translate-y-0.5 hover:border-white"
-          routerLink="/auth/login"
-        >
-          Voir la démo
-        </a>
+      <div class="landing__actions">
+        <button *ngIf="(isAuthenticated$ | async); else guestCta" type="button" (click)="goToDashboard()">
+          Accéder au tableau de bord
+        </button>
+        <ng-template #guestCta>
+          <a routerLink="/auth/login" class="button">Se connecter</a>
+          <a routerLink="/auth/register" class="link">Créer un compte</a>
+        </ng-template>
+      </div>
+      <div class="landing__note" *ngIf="(user$ | async) as user">
+        Connecté en tant que <strong>{{ user.displayName || user.email }}</strong>.
       </div>
     </div>
+    <div class="landing__illustration">
+      <img src="assets/landing-dashboard.svg" alt="Aperçu du tableau de bord" />
+    </div>
+  </div>
+
+  <div class="features">
+    <article class="feature">
+      <h3>Créez vos équipes</h3>
+      <p>Invitez vos coéquipiers en un instant et gérez vos rosters en temps réel.</p>
+    </article>
+    <article class="feature">
+      <h3>Planifiez les rencontres</h3>
+      <p>Sélectionnez les équipes concernées, une date et un lieu : le calendrier se met à jour pour tout le monde.</p>
+    </article>
+    <article class="feature">
+      <h3>Suivez les scores</h3>
+      <p>Renseignez les résultats dès le coup de sifflet final et gardez un historique complet de vos matchs.</p>
+    </article>
   </div>
 </section>

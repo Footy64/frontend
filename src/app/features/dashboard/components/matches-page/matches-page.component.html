@@ -1,0 +1,90 @@
+<section class="matches-grid">
+  <article class="card">
+    <header class="card__header">
+      <div>
+        <h2>Programmer un match</h2>
+        <p>Choisissez deux équipes distinctes, une date et un terrain.</p>
+      </div>
+    </header>
+    <form [formGroup]="createMatchForm" (ngSubmit)="createMatch()" class="form">
+      <div class="form__row">
+        <label class="form__field">
+          <span>Équipe à domicile</span>
+          <select formControlName="homeTeamId">
+            <option [ngValue]="null" disabled>Choisir une équipe</option>
+            <option *ngFor="let team of (teams$ | async) ?? []" [value]="team.id">{{ team.name }}</option>
+          </select>
+        </label>
+        <label class="form__field">
+          <span>Équipe visiteuse</span>
+          <select formControlName="awayTeamId">
+            <option [ngValue]="null" disabled>Choisir une équipe</option>
+            <option *ngFor="let team of (teams$ | async) ?? []" [value]="team.id">{{ team.name }}</option>
+          </select>
+        </label>
+      </div>
+      <small *ngIf="createMatchForm.hasError('sameTeams')" class="error">Les deux équipes doivent être différentes.</small>
+      <div class="form__row">
+        <label class="form__field">
+          <span>Date et heure</span>
+          <input type="datetime-local" formControlName="date" />
+        </label>
+        <label class="form__field">
+          <span>Lieu</span>
+          <input type="text" formControlName="place" placeholder="Ex : Stade Auguste-Delaune" />
+        </label>
+      </div>
+      <div class="form__actions">
+        <button type="submit" [disabled]="isCreatingMatch || ((teams$ | async)?.length ?? 0) < 2">
+          {{ isCreatingMatch ? 'Planification...' : 'Créer le match' }}
+        </button>
+        <span *ngIf="matchFeedback as feedback" [ngClass]="feedback.type">{{ feedback.message }}</span>
+      </div>
+    </form>
+  </article>
+
+  <article class="card">
+    <header class="card__header">
+      <div>
+        <h2>Mes matchs</h2>
+        <p>Consultez les rencontres à venir et mettez à jour les scores.</p>
+      </div>
+    </header>
+
+    <ng-container *ngIf="(isLoadingMatches$ | async); else matchesContent">
+      <p class="muted">Chargement des matchs...</p>
+    </ng-container>
+    <ng-template #matchesContent>
+      <ng-container *ngIf="(matches$ | async) as matches">
+        <p class="muted" *ngIf="!matches.length">Aucun match pour le moment.</p>
+        <div *ngFor="let match of matches; trackBy: trackByMatchId" class="match-card">
+          <div class="match-card__header">
+            <h3>{{ match.homeTeam.name }} vs {{ match.awayTeam.name }}</h3>
+            <p>{{ match.place }} • {{ match.date | date: 'short' }}</p>
+          </div>
+
+          <form class="score-form" [formGroup]="getScoreForm(match.id)" (ngSubmit)="updateScore(match)">
+            <div class="score-form__inputs">
+              <label>
+                <span>{{ match.homeTeam.name }}</span>
+                <input type="number" min="0" formControlName="homeScore" />
+              </label>
+              <label>
+                <span>{{ match.awayTeam.name }}</span>
+                <input type="number" min="0" formControlName="awayScore" />
+              </label>
+            </div>
+            <div class="score-form__actions">
+              <button type="submit" [disabled]="isScoreActionLoading(match.id)">
+                {{ isScoreActionLoading(match.id) ? 'Enregistrement...' : 'Mettre à jour le score' }}
+              </button>
+              <span *ngIf="scoreFeedbacks.get(match.id) as feedback" [ngClass]="feedback.type">
+                {{ feedback.message }}
+              </span>
+            </div>
+          </form>
+        </div>
+      </ng-container>
+    </ng-template>
+  </article>
+</section>
