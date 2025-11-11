@@ -1,208 +1,153 @@
-<header
-  class="sticky top-0 z-40 border-b border-white/5 bg-[#050b08]/90 backdrop-blur-md"
->
-  <div
-    class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8"
-  >
-    <a
-      (click)="closeMenu()"
-      class="flex items-center gap-3 text-base font-semibold text-white"
-      routerLink="/"
-    >
-      <span
-        class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#0d1f18] text-sm text-emerald-200"
-        >F</span
-      >
-      Footy
+<header class="app-nav">
+  <div class="app-nav__bar">
+    <a class="app-nav__brand" routerLink="/" (click)="closeMenu()">
+      <span class="app-nav__logo">F</span>
+      <div class="app-nav__brand-copy">
+        <span>Footy</span>
+        <small>club control room</small>
+      </div>
     </a>
 
-    <nav class="hidden items-center gap-5 text-sm text-slate-300 lg:flex">
-      <ng-container *ngIf="isAuthenticated$ | async; else guestDesktop">
+    <nav class="app-nav__links" aria-label="Navigation principale">
+      <ng-container *ngIf="isAuthenticated$ | async; else guestDesktopLinks">
         <a
-          (click)="closeMenu()"
-          class="transition hover:text-white"
+          class="app-nav__link"
           routerLink="/dashboard"
-          routerLinkActive="text-white"
-          >Tableau de bord</a
+          routerLinkActive="app-nav__link--active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="closeMenu()"
+          >Vue d'ensemble</a
         >
         <a
-          (click)="closeMenu()"
-          class="transition hover:text-white"
+          class="app-nav__link"
           routerLink="/dashboard/teams"
-          routerLinkActive="text-white"
-          >Équipes</a
+          routerLinkActive="app-nav__link--active"
+          (click)="closeMenu()"
+          >Equipes</a
         >
         <a
-          (click)="closeMenu()"
-          class="transition hover:text-white"
+          class="app-nav__link"
           routerLink="/dashboard/matches"
-          routerLinkActive="text-white"
+          routerLinkActive="app-nav__link--active"
+          (click)="closeMenu()"
           >Matchs</a
         >
       </ng-container>
     </nav>
 
-    <div class="hidden items-center gap-3 lg:flex">
-      <ng-container *ngIf="isAuthenticated$ | async; else guestActions">
-        <div
-          *ngIf="user$ | async as user"
-          class="rounded-full border border-white/10 px-3 py-1 text-xs text-slate-300"
-        >
+    <div class="app-nav__actions">
+      <ng-container *ngIf="isAuthenticated$ | async; else guestDesktopActions">
+        <span class="app-nav__pill" *ngIf="user$ | async as user">
           {{ user.displayName || user.email }}
-        </div>
-        <button
-          (click)="logout()"
-          class="rounded-full border border-white/10 px-4 py-2 text-xs font-semibold text-slate-100 transition hover:border-rose-400 hover:text-rose-200"
-          type="button"
-        >
-          Se déconnecter
+        </span>
+        <button class="app-nav__button app-nav__button--ghost" type="button" (click)="logout()">
+          Se deconnecter
         </button>
       </ng-container>
     </div>
-    <ng-template #guestDesktop>
-      <a
-        (click)="closeMenu()"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="transition hover:text-white"
-        routerLink="/"
-        routerLinkActive="text-white"
-        >Accueil</a
-      >
-      <a
-        (click)="closeMenu()"
-        class="transition hover:text-white"
-        routerLink="/auth/login"
-        routerLinkActive="text-white"
-        >Se connecter</a
-      >
-      <a
-        (click)="closeMenu()"
-        class="rounded-full bg-[#e1f4ec] px-4 py-2 text-xs font-semibold text-[#0d2017] transition hover:opacity-90"
-        routerLink="/auth/register"
-        routerLinkActive="text-white"
-        >S'inscrire</a
-      >
-    </ng-template>
-    <ng-template #guestActions>
-      <a
-        (click)="closeMenu()"
-        class="text-sm text-slate-300 transition hover:text-white"
-        routerLink="/auth/login"
-        >Se connecter</a
-      >
-      <a
-        (click)="closeMenu()"
-        class="rounded-full bg-[#e1f4ec] px-4 py-2 text-xs font-semibold text-[#0d2017] transition hover:opacity-90"
-        routerLink="/auth/register"
-        >Rejoindre Footy</a
-      >
-    </ng-template>
 
-    <button
-      (click)="toggleMenu()"
-      class="inline-flex items-center justify-center rounded-xl border border-white/10 p-2 text-white lg:hidden"
-      type="button"
-    >
-      <span class="sr-only">Basculer la navigation</span>
-      <svg
-        *ngIf="!isMenuOpen"
-        class="h-5 w-5"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        viewBox="0 0 24 24"
-      >
-        <path
-          d="M4 6h16M4 12h16M4 18h16"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        ></path>
-      </svg>
-      <svg
-        *ngIf="isMenuOpen"
-        class="h-5 w-5"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        viewBox="0 0 24 24"
-      >
-        <path
-          d="M6 18 18 6M6 6l12 12"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        ></path>
-      </svg>
+    <button class="app-nav__menu" type="button" (click)="toggleMenu()">
+      <span class="sr-only">Ouvrir le menu</span>
+      <span *ngIf="!isMenuOpen">&#9776;</span>
+      <span *ngIf="isMenuOpen">&#10005;</span>
     </button>
   </div>
 
-  <nav *ngIf="isMenuOpen" class="lg:hidden" id="mobile-menu">
-    <div
-      class="space-y-3 border-t border-white/10 bg-[#040906] px-4 py-4 text-sm text-slate-200"
-    >
-      <ng-container *ngIf="isAuthenticated$ | async; else guestMobile">
-        <div
-          *ngIf="user$ | async as user"
-          class="rounded-xl border border-white/10 px-4 py-3 text-xs text-slate-300"
-        >
-          {{ user.displayName || user.email }}
+  <section *ngIf="isMenuOpen" class="app-nav__drawer" aria-label="Navigation mobile">
+    <ng-container *ngIf="isAuthenticated$ | async; else guestMobile">
+      <div class="app-nav__drawer-panel">
+        <div class="app-nav__drawer-user" *ngIf="user$ | async as user">
+          <p class="app-nav__drawer-label">Connecte</p>
+          <strong>{{ user.displayName || user.email }}</strong>
         </div>
         <a
-          (click)="closeMenu()"
-          class="block rounded-xl border border-white/10 px-4 py-3"
+          class="app-nav__drawer-link"
           routerLink="/dashboard"
-          routerLinkActive="text-white"
-          >Tableau de bord</a
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="app-nav__drawer-link--active"
+          (click)="closeMenu()"
+          >Vue d'ensemble</a
         >
         <a
-          (click)="closeMenu()"
-          class="block rounded-xl border border-white/10 px-4 py-3"
+          class="app-nav__drawer-link"
           routerLink="/dashboard/teams"
-          routerLinkActive="text-white"
-          >Équipes</a
+          routerLinkActive="app-nav__drawer-link--active"
+          (click)="closeMenu()"
+          >Equipes</a
         >
         <a
-          (click)="closeMenu()"
-          class="block rounded-xl border border-white/10 px-4 py-3"
+          class="app-nav__drawer-link"
           routerLink="/dashboard/matches"
-          routerLinkActive="text-white"
+          routerLinkActive="app-nav__drawer-link--active"
+          (click)="closeMenu()"
           >Matchs</a
         >
-        <button
-          (click)="logout()"
-          class="w-full rounded-xl border border-rose-400/30 px-4 py-3 text-left text-rose-200"
-          type="button"
-        >
-          Se déconnecter
+        <button class="app-nav__drawer-logout" type="button" (click)="logout()">
+          Se deconnecter
         </button>
-      </ng-container>
-    </div>
-    <ng-template #guestMobile>
-      <div
-        class="space-y-3 border-t border-white/10 bg-[#040906] px-4 py-4 text-sm text-slate-200"
-      >
-        <a
-          (click)="closeMenu()"
-          [routerLinkActiveOptions]="{ exact: true }"
-          class="block rounded-xl border border-white/10 px-4 py-3"
-          routerLink="/"
-          routerLinkActive="text-white"
-          >Accueil</a
-        >
-        <a
-          (click)="closeMenu()"
-          class="block rounded-xl border border-white/10 px-4 py-3"
-          routerLink="/auth/login"
-          routerLinkActive="text-white"
-          >Se connecter</a
-        >
-        <a
-          (click)="closeMenu()"
-          class="block rounded-xl border border-white/10 bg-[#e1f4ec]/10 px-4 py-3 text-center font-semibold text-white"
-          routerLink="/auth/register"
-          routerLinkActive="text-white"
-          >Rejoindre Footy</a
-        >
       </div>
-    </ng-template>
-  </nav>
+    </ng-container>
+  </section>
+
+  <ng-template #guestDesktopLinks>
+    <a
+      class="app-nav__link"
+      routerLink="/"
+      [routerLinkActiveOptions]="{ exact: true }"
+      routerLinkActive="app-nav__link--active"
+      (click)="closeMenu()"
+      >Accueil</a
+    >
+    <a
+      class="app-nav__link"
+      routerLink="/auth/login"
+      routerLinkActive="app-nav__link--active"
+      (click)="closeMenu()"
+      >Connexion</a
+    >
+    <a
+      class="app-nav__link"
+      routerLink="/auth/register"
+      routerLinkActive="app-nav__link--active"
+      (click)="closeMenu()"
+      >Inscription</a
+    >
+  </ng-template>
+
+  <ng-template #guestDesktopActions>
+    <a class="app-nav__button app-nav__button--ghost" routerLink="/auth/login" (click)="closeMenu()">
+      Se connecter
+    </a>
+    <a class="app-nav__button app-nav__button--solid" routerLink="/auth/register" (click)="closeMenu()">
+      Rejoindre Footy
+    </a>
+  </ng-template>
+
+  <ng-template #guestMobile>
+    <div class="app-nav__drawer-panel">
+      <p class="app-nav__drawer-label">Demarrer</p>
+      <a
+        class="app-nav__drawer-link"
+        routerLink="/"
+        [routerLinkActiveOptions]="{ exact: true }"
+        routerLinkActive="app-nav__drawer-link--active"
+        (click)="closeMenu()"
+        >Accueil</a
+      >
+      <a
+        class="app-nav__drawer-link"
+        routerLink="/auth/login"
+        routerLinkActive="app-nav__drawer-link--active"
+        (click)="closeMenu()"
+        >Connexion</a
+      >
+      <a
+        class="app-nav__drawer-link app-nav__drawer-link--highlight"
+        routerLink="/auth/register"
+        routerLinkActive="app-nav__drawer-link--active"
+        (click)="closeMenu()"
+        >Inscription</a
+      >
+    </div>
+  </ng-template>
 </header>

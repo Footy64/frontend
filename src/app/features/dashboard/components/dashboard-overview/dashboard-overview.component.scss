@@ -1,113 +1,132 @@
-.overview-grid {
+:host {
+  display: block;
+}
+
+.dash-overview {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.dash-overview__grid {
   display: grid;
   gap: 1.5rem;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
-.card {
-  background: #fff;
-  border-radius: 1.25rem;
-  border: 1px solid rgba(148, 163, 184, 0.25);
-  padding: 1.75rem;
+.dash-overview__card {
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: clamp(1.25rem, 3vw, 2rem);
+  background: rgba(5, 11, 9, 0.85);
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.05);
 }
 
-.card.emphasis {
-  background: radial-gradient(
-    circle at top,
-    rgba(16, 185, 129, 0.12),
-    rgba(59, 130, 246, 0.08)
-  );
-  color: rgb(15, 23, 42);
+.dash-overview__card--accent {
+  background: linear-gradient(135deg, rgba(4, 47, 35, 0.95), rgba(4, 12, 8, 0.8));
 }
 
-.card__header {
+.dash-overview__card--wide {
+  width: 100%;
+}
+
+.dash-overview__eyebrow {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.35em;
+  color: rgba(148, 250, 200, 0.85);
+}
+
+.dash-overview__card header {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 1rem;
 }
 
-.card__header h2,
-.card__header h3 {
-  font-size: 1.25rem;
-  font-weight: 700;
+.dash-overview__card header a {
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(94, 234, 212, 0.95);
 }
 
-.card__header a {
-  font-size: 0.9rem;
-  color: rgb(14, 116, 144);
+.dash-overview__actions {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.dash-overview__actions a {
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1rem;
   text-decoration: none;
+  color: #f8fafc;
+  background: rgba(248, 250, 252, 0.04);
+}
+
+.dash-overview__actions span {
   font-weight: 600;
 }
 
-.quick-actions {
+.dash-overview__actions p {
+  font-size: 0.85rem;
+  color: rgba(226, 232, 240, 0.75);
+}
+
+.dash-overview__muted {
+  font-size: 0.9rem;
+  color: rgba(148, 163, 184, 0.8);
+}
+
+.dash-overview__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.dash-overview__list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(248, 250, 252, 0.02);
+}
+
+.dash-overview__list strong {
+  display: block;
+  font-size: 1rem;
+}
+
+.dash-overview__list span {
+  font-size: 0.85rem;
+  color: rgba(226, 232, 240, 0.75);
+}
+
+.dash-overview__team-grid {
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
 }
 
-.quick-action {
-  display: block;
-  padding: 1.25rem;
-  border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.6);
-  border: 1px solid rgba(148, 163, 184, 0.3);
-  text-decoration: none;
-  color: rgb(15, 23, 42);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+.dash-overview__team-grid article {
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 1rem;
+  background: rgba(248, 250, 252, 0.02);
 }
 
-.quick-action:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
-}
-
-.quick-action__title {
-  display: block;
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.quick-action__subtitle {
-  display: block;
-  margin-top: 0.35rem;
+.dash-overview__team-grid p {
+  margin-top: 0.25rem;
   font-size: 0.85rem;
-  color: rgba(15, 23, 42, 0.7);
-}
-
-.muted {
-  color: rgba(71, 85, 105, 0.8);
-  font-size: 0.9rem;
-}
-
-.stack {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  margin: 0;
-  padding: 0;
-}
-
-.stack__item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  padding: 0.75rem 1rem;
-  border-radius: 0.9rem;
-  background: rgba(241, 245, 249, 0.8);
-}
-
-.stack__title {
-  font-weight: 600;
-}
-
-.stack__meta {
-  font-size: 0.85rem;
-  color: rgba(71, 85, 105, 0.75);
+  color: rgba(226, 232, 240, 0.75);
 }

@@ -1,86 +1,57 @@
-<section class="space-y-8">
-  <div
-    class="rounded-3xl border border-white/10 bg-[#0a120f] px-6 py-8 sm:px-10"
-  >
-    <div
-      class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between"
-    >
-      <div class="space-y-2">
-        <p class="text-xs uppercase tracking-[0.35em] text-emerald-200">
-          Tableau de bord
-        </p>
-        <h1 class="text-3xl font-semibold text-white">
-          Supervise tes équipes et matchs en un coup d'œil
-        </h1>
-        <p class="text-sm text-slate-400">
-          <ng-container *ngIf="user$ | async as user; else guest"
-            >Bienvenue, {{ user.displayName || user.email }}.
-          </ng-container>
-        </p>
-        <ng-template #guest
-          >Connecte-toi pour synchroniser tes données Footy.</ng-template
-        >
+<section class="dash-shell">
+  <header class="dash-shell__hero">
+    <div class="dash-shell__intro">
+      <p class="dash-shell__eyebrow">Cockpit Footy</p>
+      <h1>Supervise tes equipes et matchs en un coup d'oeil</h1>
+      <p>
+        <ng-container *ngIf="user$ | async as user; else guest">
+          Bienvenue {{ user.displayName || user.email }}, tout est pret.
+        </ng-container>
+      </p>
+      <ng-template #guest>Connecte-toi pour synchroniser tes donnees Footy.</ng-template>
+    </div>
+    <div class="dash-shell__metrics">
+      <article>
+        <span>Equipes actives</span>
+        <strong>{{ (teams$ | async)?.length ?? 0 }}</strong>
+      </article>
+      <article>
+        <span>Matchs planifies</span>
+        <strong>{{ (matches$ | async)?.length ?? 0 }}</strong>
+      </article>
+    </div>
+  </header>
+
+  <div class="dash-shell__controls">
+    <nav class="dash-shell__tabs" aria-label="Sections du tableau de bord">
+      <a
+        routerLink="overview"
+        [routerLinkActiveOptions]="{ exact: true }"
+        routerLinkActive="dash-shell__tab--active"
+        >Vue d'ensemble</a
+      >
+      <a routerLink="teams" routerLinkActive="dash-shell__tab--active">Equipes</a>
+      <a routerLink="matches" routerLinkActive="dash-shell__tab--active">Matchs</a>
+    </nav>
+    <div class="dash-shell__sync">
+      <div class="dash-shell__sync-status">
+        <ng-container *ngIf="(isLoadingTeams$ | async) || (isLoadingMatches$ | async); else syncOk">
+          <span class="dash-shell__dot dash-shell__dot--pulse"></span>
+          Mise a jour en cours...
+        </ng-container>
+        <ng-template #syncOk>
+          <span class="dash-shell__dot"></span>
+          Donnees a jour
+        </ng-template>
       </div>
-      <div class="grid gap-4 sm:grid-cols-2">
-        <div
-          class="rounded-2xl border border-white/10 bg-[#090f0c] px-5 py-4 text-center"
-        >
-          <p class="text-xs uppercase tracking-[0.35em] text-slate-400">
-            Équipes
-          </p>
-          <p class="mt-2 text-3xl font-semibold text-white">
-            {{ (teams$ | async)?.length ?? 0 }}
-          </p>
-        </div>
-        <div
-          class="rounded-2xl border border-white/10 bg-[#090f0c] px-5 py-4 text-center"
-        >
-          <p class="text-xs uppercase tracking-[0.35em] text-slate-400">
-            Matchs
-          </p>
-          <p class="mt-2 text-3xl font-semibold text-white">
-            {{ (matches$ | async)?.length ?? 0 }}
-          </p>
-        </div>
-      </div>
+      <button type="button" class="dash-shell__refresh" (click)="refreshAll()">
+        Recharger
+      </button>
     </div>
   </div>
 
-  <nav class="flex flex-wrap gap-3">
-    <a
-      [routerLinkActiveOptions]="{ exact: true }"
-      class="rounded-full border border-white/10 px-4 py-2 text-sm text-slate-300 transition hover:border-emerald-300"
-      routerLink="overview"
-      routerLinkActive="!bg-white/10 text-white"
-      >Vue d'ensemble</a
-    >
-    <a
-      class="rounded-full border border-white/10 px-4 py-2 text-sm text-slate-300 transition hover:border-emerald-300"
-      routerLink="teams"
-      routerLinkActive="!bg-white/10 text-white"
-      >Équipes</a
-    >
-    <a
-      class="rounded-full border border-white/10 px-4 py-2 text-sm text-slate-300 transition hover:border-emerald-300"
-      routerLink="matches"
-      routerLinkActive="!bg-white/10 text-white"
-      >Matchs</a
-    >
-    <button
-      (click)="refreshAll()"
-      *ngIf="dataError"
-      class="ml-auto rounded-full border border-rose-400/30 px-4 py-2 text-sm text-rose-200"
-      type="button"
-    >
-      Recharger
-    </button>
-  </nav>
-
-  <div
-    *ngIf="dataError"
-    class="rounded-2xl border border-rose-400/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200"
-  >
-    {{ dataError }}
+  <div *ngIf="dataError" class="dash-shell__error">
+    <p>{{ dataError }}</p>
   </div>
 
   <router-outlet></router-outlet>

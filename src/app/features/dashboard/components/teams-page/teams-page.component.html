@@ -1,221 +1,116 @@
-<section class="space-y-8">
-  <header
-    class="rounded-3xl border border-white/10 bg-[#0a120f] px-6 py-7 sm:px-10"
-  >
-    <div
-      class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
-    >
-      <div>
-        <p class="text-xs uppercase tracking-[0.35em] text-emerald-200">
-          Collectif
-        </p>
-        <h1 class="text-3xl font-semibold text-white">
-          Structure tes équipes en quelques minutes
-        </h1>
-        <p class="text-sm text-slate-400">
-          Invite des joueurs par leur display name et garde un roster clair.
-        </p>
-      </div>
-      <div class="text-sm text-slate-400">
-        {{ selectedMembers.length }} joueur{{
-          selectedMembers.length > 1 ? 's' : ''
-        }}
-        présélectionné{{ selectedMembers.length > 1 ? 's' : '' }}
-      </div>
+<section class="teams">
+  <header class="teams__hero">
+    <div>
+      <p class="teams__eyebrow">Collectif</p>
+      <h1>Structure tes equipes en quelques minutes</h1>
+      <p>Invite des joueurs par display name et garde un roster clair.</p>
+    </div>
+    <div class="teams__hero-pill">
+      {{ selectedMembers.length }} joueur{{ selectedMembers.length > 1 ? 's' : '' }} preselectionne{{ selectedMembers.length > 1 ? 's' : '' }}
     </div>
   </header>
 
-  <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
-    <article class="rounded-3xl border border-white/10 bg-[#090f0c] p-6">
-      <div class="mb-6">
-        <p class="text-xs uppercase tracking-[0.35em] text-slate-400">
-          Nouvelle équipe
-        </p>
-        <h2 class="text-2xl font-semibold text-white">Compose ton roster</h2>
-      </div>
-      <form
-        (ngSubmit)="createTeam()"
-        [formGroup]="createTeamForm"
-        class="space-y-6"
-      >
-        <label class="block text-sm text-slate-300">
-          <span
-            class="mb-2 block text-xs uppercase tracking-[0.35em] text-slate-500"
-            >Nom</span
-          >
+  <div class="teams__grid">
+    <article class="teams__builder">
+      <header>
+        <p class="teams__eyebrow">Nouvelle equipe</p>
+        <h2>Compose ton roster</h2>
+      </header>
+      <form [formGroup]="createTeamForm" (ngSubmit)="createTeam()" class="teams__form">
+        <label class="teams__field">
+          <span>Nom</span>
           <input
-            class="w-full rounded-2xl border border-white/10 bg-[#070b08] px-4 py-3 text-sm text-white focus:border-emerald-300 focus:outline-none"
-            formControlName="name"
             id="team-name"
-            maxlength="64"
-            placeholder="Ex : FC Footy"
             type="text"
+            maxlength="64"
+            formControlName="name"
+            placeholder="Ex : FC Footy"
           />
-          <p
-            *ngIf="
-              createTeamForm.get('name')?.touched &&
-              createTeamForm.get('name')?.hasError('required')
-            "
-            class="mt-2 text-xs text-rose-300"
-          >
+          <p *ngIf="createTeamForm.get('name')?.touched && createTeamForm.get('name')?.hasError('required')" class="teams__error">
             Choisis un nom.
           </p>
         </label>
 
-        <app-user-autocomplete
-          (userSelected)="onCreateMemberSelected($event)"
-          [selectedUserIds]="selectedMemberIds"
-          hint="Sélectionne un joueur et valide avec le bouton +"
-          label="Inviter des joueurs"
-          placeholder="Rechercher par display name"
-        ></app-user-autocomplete>
-
-        <div class="space-y-3">
-          <div
-            class="flex items-center justify-between text-xs uppercase tracking-[0.35em] text-slate-500"
-          >
-            <span>Roster</span>
-            <span
-              >{{ selectedMembers.length }} joueur{{
-                selectedMembers.length > 1 ? 's' : ''
-              }}</span
-            >
-          </div>
-          <div
-            *ngIf="selectedMembers.length; else emptySelection"
-            class="flex flex-wrap gap-3"
-          >
-            <div
-              *ngFor="let member of selectedMembers"
-              class="flex items-center gap-2 rounded-full border border-white/10 bg-[#070b08] px-4 py-1.5 text-sm text-slate-100"
-            >
-              <span>{{ member.displayName || member.email }}</span>
-              <button
-                (click)="removeSelectedMember(member.id)"
-                [disabled]="isCreatingTeam"
-                aria-label="Retirer"
-                class="flex h-7 w-7 items-center justify-center rounded-full border border-white/20 text-base leading-none text-slate-200 transition hover:border-rose-300"
-                type="button"
-              >
-                −
-              </button>
-            </div>
-          </div>
-          <ng-template #emptySelection>
-            <p class="text-sm text-slate-500">
-              Ajoute des joueurs via la recherche ci-dessus.
-            </p>
-          </ng-template>
+        <div class="teams__autocomplete">
+          <app-user-autocomplete
+            label="Inviter des joueurs"
+            placeholder="Rechercher par display name"
+            hint="Selectionne un joueur puis clique sur +"
+            [selectedUserIds]="selectedMemberIds"
+            (userSelected)="onCreateMemberSelected($event)"
+          ></app-user-autocomplete>
         </div>
 
-        <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <button
-            [disabled]="isCreatingTeam"
-            class="inline-flex items-center justify-center rounded-2xl bg-[#e6f2ec] px-6 py-3 text-sm font-semibold text-[#0f2119] transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
-            type="submit"
-          >
-            {{ isCreatingTeam ? 'Création...' : "Créer l'équipe" }}
+        <section class="teams__roster">
+          <header>
+            <span>Roster</span>
+            <span>{{ selectedMembers.length }} joueur{{ selectedMembers.length > 1 ? 's' : '' }}</span>
+          </header>
+          <div *ngIf="selectedMembers.length; else emptyRoster" class="teams__chips">
+            <div *ngFor="let member of selectedMembers" class="teams__chip">
+              <span>{{ member.displayName || member.email }}</span>
+              <button type="button" (click)="removeSelectedMember(member.id)" [disabled]="isCreatingTeam">&times;</button>
+            </div>
+          </div>
+          <ng-template #emptyRoster>
+            <p class="teams__muted">Ajoute des joueurs via la recherche ci-dessus.</p>
+          </ng-template>
+        </section>
+
+        <div class="teams__actions">
+          <button type="submit" [disabled]="isCreatingTeam" class="teams__primary">
+            {{ isCreatingTeam ? 'Creation...' : 'Creer l\'equipe' }}
           </button>
-          <span
-            *ngIf="teamFeedback as feedback"
-            [ngClass]="
-              feedback.type === 'success' ? 'text-emerald-200' : 'text-rose-300'
-            "
-            class="text-sm"
-            >{{ feedback.message }}</span
-          >
+          <span *ngIf="teamFeedback as feedback" [ngClass]="feedback.type === 'success' ? 'teams__success' : 'teams__error'">
+            {{ feedback.message }}
+          </span>
         </div>
       </form>
     </article>
 
-    <article class="rounded-3xl border border-white/10 bg-[#090f0c] p-6">
-      <div class="mb-6">
-        <p class="text-xs uppercase tracking-[0.35em] text-slate-400">
-          Mes équipes
-        </p>
-        <h2 class="text-2xl font-semibold text-white">
-          Gère roster et invitations
-        </h2>
-      </div>
+    <article class="teams__library">
+      <header>
+        <p class="teams__eyebrow">Mes equipes</p>
+        <h2>Gerer rosters et invitations</h2>
+      </header>
       <ng-container *ngIf="isLoadingTeams$ | async; else teamsContent">
-        <p class="text-sm text-slate-400">Chargement des équipes...</p>
+        <p class="teams__muted">Chargement des equipes...</p>
       </ng-container>
       <ng-template #teamsContent>
         <ng-container *ngIf="teams$ | async as teams">
-          <p *ngIf="!teams.length" class="text-sm text-slate-400">
-            Aucune équipe pour le moment.
-          </p>
-          <div *ngIf="teams.length" class="space-y-6">
-            <div
-              *ngFor="let team of teams; trackBy: trackByTeamId"
-              class="space-y-4 rounded-2xl border border-white/10 bg-[#070b08] p-5"
-            >
-              <header
-                class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between"
-              >
+          <p *ngIf="!teams.length" class="teams__muted">Aucune equipe pour le moment.</p>
+          <div *ngIf="teams.length" class="teams__list">
+            <div *ngFor="let team of teams; trackBy: trackByTeamId" class="teams__card">
+              <div class="teams__card-head">
                 <div>
-                  <p class="text-xs uppercase tracking-[0.35em] text-slate-500">
-                    Équipe
-                  </p>
-                  <h3 class="text-xl font-semibold text-white">
-                    {{ team.name }}
-                  </h3>
+                  <p>Equipe</p>
+                  <h3>{{ team.name }}</h3>
                 </div>
-                <span class="text-xs text-slate-400"
-                  >{{ team.members.length }} joueur{{
-                    team.members.length > 1 ? 's' : ''
-                  }}</span
-                >
-              </header>
-
-              <div>
-                <p
-                  class="mb-2 text-xs uppercase tracking-[0.35em] text-slate-500"
-                >
-                  Joueurs
-                </p>
-                <div
-                  *ngIf="team.members.length; else noMembers"
-                  class="flex flex-wrap gap-3"
-                >
-                  <div
-                    *ngFor="let member of team.members"
-                    class="flex items-center gap-2 rounded-full border border-white/10 bg-[#050805] px-4 py-1.5 text-sm text-slate-100"
-                  >
+                <span>{{ team.members.length }} joueur{{ team.members.length > 1 ? 's' : '' }}</span>
+              </div>
+              <div class="teams__members">
+                <p>Joueurs</p>
+                <div *ngIf="team.members.length; else noMembers" class="teams__chips">
+                  <div *ngFor="let member of team.members" class="teams__chip">
                     <span>{{ member.displayName || member.email }}</span>
-                    <button
-                      (click)="removeMember(team, member)"
-                      [disabled]="isMemberActionLoading(team.id)"
-                      aria-label="Retirer"
-                      class="flex h-7 w-7 items-center justify-center rounded-full border border-white/20 text-base leading-none text-slate-200 transition hover:border-rose-300"
-                      type="button"
-                    >
-                      −
-                    </button>
+                    <button type="button" (click)="removeMember(team, member)" [disabled]="isMemberActionLoading(team.id)">&times;</button>
                   </div>
                 </div>
                 <ng-template #noMembers>
-                  <p class="text-sm text-slate-500">
-                    Aucun joueur pour le moment.
-                  </p>
+                  <p class="teams__muted">Aucun joueur pour le moment.</p>
                 </ng-template>
               </div>
-
-              <app-user-autocomplete
-                (userSelected)="addMemberToTeam(team, $event)"
-                [disabled]="isMemberActionLoading(team.id)"
-                [selectedUserIds]="memberIds(team)"
-                hint="Clique sur le + pour inviter le joueur"
-                label="Ajouter un joueur"
-                placeholder="Rechercher par display name"
-              ></app-user-autocomplete>
-
-              <p
-                *ngIf="isMemberActionLoading(team.id)"
-                class="text-xs text-slate-500"
-              >
-                Synchronisation…
-              </p>
+              <div class="teams__autocomplete">
+                <app-user-autocomplete
+                  label="Ajouter un joueur"
+                  placeholder="Rechercher par display name"
+                  hint="Clique sur le + pour inviter le joueur"
+                  [disabled]="isMemberActionLoading(team.id)"
+                  [selectedUserIds]="memberIds(team)"
+                  (userSelected)="addMemberToTeam(team, $event)"
+                ></app-user-autocomplete>
+              </div>
+              <p *ngIf="isMemberActionLoading(team.id)" class="teams__muted">Synchronisation...</p>
             </div>
           </div>
         </ng-container>

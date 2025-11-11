@@ -1,13 +1,16 @@
-﻿<div class="flex min-h-screen flex-col bg-[#050a07] text-slate-100">
+<div class="app-shell">
+  <div class="app-shell__backdrop" aria-hidden="true"></div>
+
   <app-navigation></app-navigation>
 
-  <main
-    class="mx-auto flex w-full max-w-6xl flex-1 px-4 pb-10 pt-6 sm:px-6 lg:px-8"
-  >
-    <div
-      class="w-full overflow-y-auto rounded-3xl border border-white/5 bg-[#070f0c] px-4 py-6 shadow-2xl shadow-black/20 sm:px-6 lg:px-8"
-    >
-      <router-outlet></router-outlet>
+  <main class="app-shell__main">
+    <div class="app-shell__grid">
+      <div class="app-shell__glow app-shell__glow--left" aria-hidden="true"></div>
+      <div class="app-shell__glow app-shell__glow--right" aria-hidden="true"></div>
+
+      <section class="app-shell__content">
+        <router-outlet></router-outlet>
+      </section>
     </div>
   </main>
 </div>

@@ -1,104 +1,71 @@
-<div class="grid gap-6 lg:grid-cols-2">
-  <section class="rounded-3xl border border-white/10 bg-[#0a120f] p-6">
-    <div class="flex items-center justify-between text-slate-300">
-      <div>
-        <p class="text-xs uppercase tracking-[0.35em] text-emerald-200">
-          Actions rapides
-        </p>
-        <h2 class="text-xl font-semibold text-white">
-          Garde ton effectif à jour
-        </h2>
+<section class="dash-overview">
+  <div class="dash-overview__grid">
+    <article class="dash-overview__card dash-overview__card--accent">
+      <header>
+        <p class="dash-overview__eyebrow">Actions rapides</p>
+        <h2>Raccourcis pour gagner du temps</h2>
+      </header>
+      <div class="dash-overview__actions">
+        <a routerLink="../teams">
+          <span>Nouvelle equipe</span>
+          <p>Invite des joueurs et fixe ton roster.</p>
+        </a>
+        <a routerLink="../matches">
+          <span>Planifier un match</span>
+          <p>Choisis deux equipes, une date et un lieu.</p>
+        </a>
       </div>
-    </div>
-    <div class="mt-5 grid gap-4 sm:grid-cols-2">
-      <a
-        class="rounded-2xl border border-white/10 bg-[#090f0c] px-4 py-4 text-left transition hover:border-emerald-300"
-        routerLink="../teams"
-      >
-        <p class="text-sm text-white">Créer une équipe</p>
-        <p class="mt-1 text-xs text-slate-400">
-          Invite des joueurs et fixe ton roster.
-        </p>
-      </a>
-      <a
-        class="rounded-2xl border border-white/10 bg-[#090f0c] px-4 py-4 text-left transition hover:border-emerald-300"
-        routerLink="../matches"
-      >
-        <p class="text-sm text-white">Planifier un match</p>
-        <p class="mt-1 text-xs text-slate-400">
-          Sélectionne deux équipes et un créneau.
-        </p>
-      </a>
-    </div>
-  </section>
+    </article>
 
-  <section class="rounded-3xl border border-white/10 bg-[#0a120f] p-6">
-    <div class="flex items-center justify-between">
-      <h3 class="text-lg font-semibold text-white">Matchs à venir</h3>
-      <a
-        class="text-xs uppercase tracking-[0.35em] text-emerald-200"
-        routerLink="../matches"
-        >Gérer</a
-      >
-    </div>
-    <ng-container *ngIf="isLoadingMatches$ | async; else matchesList">
-      <p class="mt-4 text-sm text-slate-400">Chargement des matchs...</p>
-    </ng-container>
-    <ng-template #matchesList>
-      <ng-container *ngIf="matches$ | async as matches">
-        <p *ngIf="!matches.length" class="mt-4 text-sm text-slate-400">
-          Aucun match planifié.
-        </p>
-        <ul *ngIf="matches.length" class="mt-4 space-y-3">
-          <li
-            *ngFor="let match of matches | slice: 0 : 3"
-            class="rounded-2xl border border-white/10 bg-[#090f0c] px-4 py-3 text-sm text-slate-200"
-          >
-            <p class="text-white">
-              {{ match.homeTeam.name }} vs {{ match.awayTeam.name }}
-            </p>
-            <p class="text-xs text-slate-500">
-              {{ match.date | date: 'fullDate' }} — {{ match.place }}
-            </p>
-          </li>
-        </ul>
+    <article class="dash-overview__card">
+      <header>
+        <p class="dash-overview__eyebrow">Matchs a venir</p>
+        <a routerLink="../matches">Gerer</a>
+      </header>
+      <ng-container *ngIf="isLoadingMatches$ | async; else matchList">
+        <p class="dash-overview__muted">Chargement des matchs...</p>
       </ng-container>
-    </ng-template>
-  </section>
+      <ng-template #matchList>
+        <ng-container *ngIf="matches$ | async as matches">
+          <p *ngIf="!matches.length" class="dash-overview__muted">
+            Aucun match planifie.
+          </p>
+          <ul *ngIf="matches.length" class="dash-overview__list">
+            <li *ngFor="let match of matches | slice: 0 : 3">
+              <div>
+                <strong>{{ match.homeTeam.name }} vs {{ match.awayTeam.name }}</strong>
+                <p>{{ match.date | date: 'fullDate' }}</p>
+              </div>
+              <span>{{ match.place }}</span>
+            </li>
+          </ul>
+        </ng-container>
+      </ng-template>
+    </article>
+  </div>
 
-  <section
-    class="rounded-3xl border border-white/10 bg-[#0a120f] p-6 lg:col-span-2"
-  >
-    <div class="flex items-center justify-between">
-      <h3 class="text-lg font-semibold text-white">Équipes</h3>
-      <a
-        class="text-xs uppercase tracking-[0.35em] text-emerald-200"
-        routerLink="../teams"
-        >Voir tout</a
-      >
-    </div>
-    <ng-container *ngIf="isLoadingTeams$ | async; else teamsList">
-      <p class="mt-4 text-sm text-slate-400">Chargement des équipes...</p>
+  <article class="dash-overview__card dash-overview__card--wide">
+    <header>
+      <p class="dash-overview__eyebrow">Equipes</p>
+      <a routerLink="../teams">Voir tout</a>
+    </header>
+    <ng-container *ngIf="isLoadingTeams$ | async; else teamList">
+      <p class="dash-overview__muted">Chargement des equipes...</p>
     </ng-container>
-    <ng-template #teamsList>
+    <ng-template #teamList>
       <ng-container *ngIf="teams$ | async as teams">
-        <p *ngIf="!teams.length" class="mt-4 text-sm text-slate-400">
-          Crée ta première équipe pour démarrer.
+        <p *ngIf="!teams.length" class="dash-overview__muted">
+          Cree ta premiere equipe pour demarrer.
         </p>
-        <div *ngIf="teams.length" class="mt-4 grid gap-4 md:grid-cols-2">
-          <article
-            *ngFor="let team of teams | slice: 0 : 4"
-            class="rounded-2xl border border-white/10 bg-[#090f0c] px-4 py-4"
-          >
-            <h4 class="text-base font-semibold text-white">{{ team.name }}</h4>
-            <p class="text-xs text-slate-400">
-              {{ team.members.length }} joueur{{
-                team.members.length > 1 ? 's' : ''
-              }}
-            </p>
+        <div *ngIf="teams.length" class="dash-overview__team-grid">
+          <article *ngFor="let team of teams | slice: 0 : 4">
+            <div>
+              <strong>{{ team.name }}</strong>
+              <p>{{ team.members.length }} joueur{{ team.members.length > 1 ? 's' : '' }}</p>
+            </div>
           </article>
         </div>
       </ng-container>
     </ng-template>
-  </section>
-</div>
+  </article>
+</section>
