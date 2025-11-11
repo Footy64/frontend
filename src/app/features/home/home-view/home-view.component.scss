@@ -7,7 +7,11 @@
   flex-direction: column;
   gap: 3rem;
   padding: 4rem 1.5rem 6rem;
-  background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.98));
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.9),
+    rgba(15, 23, 42, 0.98)
+  );
   color: #f8fafc;
 }
 
@@ -62,7 +66,9 @@
   background: rgb(16, 185, 129);
   color: #0f172a;
   text-decoration: none;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .landing__actions button:hover,
@@ -86,7 +92,11 @@
   position: relative;
   padding: 2rem;
   border-radius: 2rem;
-  background: linear-gradient(135deg, rgba(94, 234, 212, 0.2), rgba(96, 165, 250, 0.18));
+  background: linear-gradient(
+    135deg,
+    rgba(94, 234, 212, 0.2),
+    rgba(96, 165, 250, 0.18)
+  );
   border: 1px solid rgba(148, 163, 184, 0.25);
   display: flex;
   align-items: center;

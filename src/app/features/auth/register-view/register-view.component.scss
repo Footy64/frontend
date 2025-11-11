@@ -5,7 +5,12 @@
 .auth-hero {
   position: relative;
   overflow: hidden;
-  background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.18), transparent 55%),
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(16, 185, 129, 0.18),
+      transparent 55%
+    ),
     linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(2, 6, 23, 0.95));
   isolation: isolate;
   color: white;
@@ -13,7 +18,11 @@
   &__overlay {
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at center, rgba(45, 212, 191, 0.1), transparent 60%);
+    background: radial-gradient(
+      circle at center,
+      rgba(45, 212, 191, 0.1),
+      transparent 60%
+    );
     opacity: 0.9;
     pointer-events: none;
   }
@@ -24,7 +33,11 @@
     inset-block-end: -18%;
     height: 360px;
     filter: blur(140px);
-    background: radial-gradient(circle, rgba(16, 185, 129, 0.45), transparent 70%);
+    background: radial-gradient(
+      circle,
+      rgba(16, 185, 129, 0.45),
+      transparent 70%
+    );
     z-index: -1;
   }
 }

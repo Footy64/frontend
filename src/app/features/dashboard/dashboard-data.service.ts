@@ -1,26 +1,27 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, forkJoin, of, throwError} from 'rxjs';
-import {catchError, finalize, map, tap} from 'rxjs/operators';
-import {Team, Match} from '../home/home.models';
-import {TeamsService} from '../home/teams.service';
-import {MatchesService} from '../home/matches.service';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, forkJoin, Observable, of, throwError } from 'rxjs';
+import { catchError, finalize, map, tap } from 'rxjs/operators';
+import { Match, Team } from '../home/home.models';
+import { TeamsService } from '../home/teams.service';
+import { MatchesService } from '../home/matches.service';
 
 @Injectable()
 export class DashboardDataService {
   private readonly teamsSubject = new BehaviorSubject<Team[]>([]);
-  private readonly matchesSubject = new BehaviorSubject<Match[]>([]);
-  private readonly isLoadingTeamsSubject = new BehaviorSubject<boolean>(false);
-  private readonly isLoadingMatchesSubject = new BehaviorSubject<boolean>(false);
-  private hasLoadedInitialData = false;
-
   readonly teams$ = this.teamsSubject.asObservable();
+  private readonly matchesSubject = new BehaviorSubject<Match[]>([]);
   readonly matches$ = this.matchesSubject.asObservable();
+  private readonly isLoadingTeamsSubject = new BehaviorSubject<boolean>(false);
   readonly isLoadingTeams$ = this.isLoadingTeamsSubject.asObservable();
+  private readonly isLoadingMatchesSubject = new BehaviorSubject<boolean>(
+    false,
+  );
   readonly isLoadingMatches$ = this.isLoadingMatchesSubject.asObservable();
+  private hasLoadedInitialData = false;
 
   constructor(
     private readonly teamsService: TeamsService,
-    private readonly matchesService: MatchesService
+    private readonly matchesService: MatchesService,
   ) {}
 
   loadInitialData(): Observable<void> {
@@ -33,67 +34,74 @@ export class DashboardDataService {
         this.hasLoadedInitialData = true;
       }),
       map(() => void 0),
-      catchError(error => {
+      catchError((error) => {
         this.hasLoadedInitialData = false;
         return throwError(() => error);
-      })
+      }),
     );
   }
 
   refreshTeams(): Observable<Team[]> {
     this.isLoadingTeamsSubject.next(true);
     return this.teamsService.list().pipe(
-      tap(teams => this.teamsSubject.next(teams)),
-      catchError(error => {
+      tap((teams) => this.teamsSubject.next(teams)),
+      catchError((error) => {
         this.teamsSubject.next([]);
         return throwError(() => error);
       }),
-      finalize(() => this.isLoadingTeamsSubject.next(false))
+      finalize(() => this.isLoadingTeamsSubject.next(false)),
     );
   }
 
   refreshMatches(): Observable<Match[]> {
     this.isLoadingMatchesSubject.next(true);
     return this.matchesService.list().pipe(
-      tap(matches => this.matchesSubject.next(matches)),
-      catchError(error => {
+      tap((matches) => this.matchesSubject.next(matches)),
+      catchError((error) => {
         this.matchesSubject.next([]);
         return throwError(() => error);
       }),
-      finalize(() => this.isLoadingMatchesSubject.next(false))
+      finalize(() => this.isLoadingMatchesSubject.next(false)),
     );
   }
 
   createTeam(dto: Parameters<TeamsService['create']>[0]): Observable<Team> {
     return this.teamsService.create(dto).pipe(
-      tap(team => {
+      tap((team) => {
         const current = this.teamsSubject.value;
         this.teamsSubject.next([...current, team]);
-      })
+      }),
     );
   }
 
   addMember(teamId: number, userId: number): Observable<Team> {
-    return this.teamsService.addMember(teamId, userId).pipe(tap(team => this.replaceTeam(team)));
+    return this.teamsService
+      .addMember(teamId, userId)
+      .pipe(tap((team) => this.replaceTeam(team)));
   }
 
   removeMember(teamId: number, memberId: number): Observable<Team> {
-    return this.teamsService.removeMember(teamId, memberId).pipe(tap(team => this.replaceTeam(team)));
+    return this.teamsService
+      .removeMember(teamId, memberId)
+      .pipe(tap((team) => this.replaceTeam(team)));
   }
 
   createMatch(dto: Parameters<MatchesService['create']>[0]): Observable<Match> {
     return this.matchesService.create(dto).pipe(
-      tap(match => {
+      tap((match) => {
         const current = this.matchesSubject.value;
         this.matchesSubject.next([...current, match]);
-      })
+      }),
     );
   }
 
-  updateScore(matchId: number, dto: Parameters<MatchesService['updateScore']>[1]): Observable<Match> {
+  updateScore(
+    matchId: number,
+    dto: Parameters<MatchesService['updateScore']>[1],
+  ): Observable<Match> {
     return this.matchesService
       .updateScore(matchId, dto)
-      .pipe(tap(match => this.replaceMatch(match)));
+      .pipe(tap((match) => this.replaceMatch(match)));
   }
 
   clear(): void {
@@ -106,7 +114,7 @@ export class DashboardDataService {
 
   private replaceTeam(team: Team): void {
     const current = this.teamsSubject.value;
-    const index = current.findIndex(item => item.id === team.id);
+    const index = current.findIndex((item) => item.id === team.id);
     if (index === -1) {
       this.teamsSubject.next([...current, team]);
       return;
@@ -119,7 +127,7 @@ export class DashboardDataService {
 
   private replaceMatch(match: Match): void {
     const current = this.matchesSubject.value;
-    const index = current.findIndex(item => item.id === match.id);
+    const index = current.findIndex((item) => item.id === match.id);
     if (index === -1) {
       this.matchesSubject.next([...current, match]);
       return;

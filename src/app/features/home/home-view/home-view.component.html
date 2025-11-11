@@ -1,42 +1,122 @@
-<section class="landing">
-  <div class="landing__hero">
-    <div class="landing__content">
-      <p class="landing__eyebrow">Gestion sportive simplifiée</p>
-      <h1>Organisez vos équipes et vos matchs en quelques clics</h1>
-      <p>
-        Footy Manager vous accompagne pour créer vos équipes, planifier vos rencontres et suivre les scores sans
-        feuilleter des tableurs interminables.
-      </p>
-      <div class="landing__actions">
-        <button *ngIf="(isAuthenticated$ | async); else guestCta" type="button" (click)="goToDashboard()">
-          Accéder au tableau de bord
-        </button>
-        <ng-template #guestCta>
-          <a routerLink="/auth/login" class="button">Se connecter</a>
-          <a routerLink="/auth/register" class="link">Créer un compte</a>
-        </ng-template>
+﻿<section class="space-y-12">
+  <div
+    class="rounded-[28px] border border-white/10 bg-[#08120d] px-6 py-12 sm:px-10"
+  >
+    <div class="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+      <div class="space-y-6">
+        <p class="text-xs uppercase tracking-[0.45em] text-emerald-200/80">
+          Footy club house
+        </p>
+        <div class="space-y-3">
+          <h1 class="text-4xl font-semibold text-white sm:text-5xl">
+            Organise tes équipes et tes matchs sans friction
+          </h1>
+          <p class="text-base text-slate-300">
+            Compose un roster, planifie une rencontre et partage les scores
+            depuis une interface professionnelle pensée pour le football
+            amateur.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-4">
+          <button
+            (click)="goToDashboard()"
+            *ngIf="isAuthenticated$ | async; else guestHeroCta"
+            class="inline-flex items-center gap-2 rounded-full bg-[#e6f2ec] px-6 py-3 text-sm font-semibold text-[#12271e] shadow-sm transition hover:opacity-90"
+            type="button"
+          >
+            Accéder au tableau de bord
+            <span aria-hidden="true">→</span>
+          </button>
+          <ng-template #guestHeroCta>
+            <a
+              class="inline-flex items-center gap-2 rounded-full border border-white/15 px-6 py-3 text-sm font-semibold text-white transition hover:border-emerald-300"
+              routerLink="/auth/register"
+            >
+              Créer un compte
+            </a>
+            <a
+              class="inline-flex items-center gap-2 text-sm text-emerald-200 hover:text-emerald-100"
+              routerLink="/auth/login"
+            >
+              Déjà membre ? Connexion
+            </a>
+          </ng-template>
+        </div>
+        <div
+          *ngIf="user$ | async as user"
+          class="rounded-2xl border border-white/10 px-4 py-3 text-sm text-slate-300"
+        >
+          Connecté en tant que
+          <strong>{{ user.displayName || user.email }}</strong
+          >.
+        </div>
       </div>
-      <div class="landing__note" *ngIf="(user$ | async) as user">
-        Connecté en tant que <strong>{{ user.displayName || user.email }}</strong>.
+
+      <div
+        class="space-y-4 rounded-[24px] border border-white/10 bg-[#090f0c] p-6"
+      >
+        <div class="text-xs uppercase tracking-[0.35em] text-slate-400">
+          Session Foot à 7
+        </div>
+        <div class="rounded-2xl border border-white/10 px-4 py-4">
+          <p class="text-sm text-slate-300">Prochain match</p>
+          <p class="text-lg font-semibold text-white">
+            Vendredi 21h • Suzanne Lenglen
+          </p>
+          <p class="text-xs text-slate-500">
+            8 joueurs confirmés • reste 2 places
+          </p>
+        </div>
+        <div class="grid gap-3 sm:grid-cols-2">
+          <div class="rounded-2xl border border-white/10 px-4 py-4">
+            <p class="text-xs uppercase tracking-[0.35em] text-emerald-200">
+              Groupes actifs
+            </p>
+            <p class="mt-2 text-2xl font-semibold text-white">+24</p>
+            <p class="text-xs text-slate-500">Clubs connectés chaque semaine</p>
+          </div>
+          <div class="rounded-2xl border border-white/10 px-4 py-4">
+            <p class="text-xs uppercase tracking-[0.35em] text-emerald-200">
+              Matchs créés
+            </p>
+            <p class="mt-2 text-2xl font-semibold text-white">300+</p>
+            <p class="text-xs text-slate-500">Scores archivés</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 text-xs text-slate-400">
+          <span
+            class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#0f1d17] text-emerald-200"
+            >⚡</span
+          >
+          Notifications présences, météo et scores en temps réel.
+        </div>
       </div>
-    </div>
-    <div class="landing__illustration">
-      <img src="assets/landing-dashboard.svg" alt="Aperçu du tableau de bord" />
     </div>
   </div>
 
-  <div class="features">
-    <article class="feature">
-      <h3>Créez vos équipes</h3>
-      <p>Invitez vos coéquipiers en un instant et gérez vos rosters en temps réel.</p>
+  <div class="grid gap-4 lg:grid-cols-3">
+    <article class="rounded-2xl border border-white/10 bg-[#090f0c] p-5">
+      <p class="text-xs uppercase tracking-[0.35em] text-emerald-200">1</p>
+      <h3 class="mt-3 text-lg font-semibold text-white">Compose tes équipes</h3>
+      <p class="mt-1 text-sm text-slate-400">
+        Invitations par display name, rôles précis et suivi des présences.
+      </p>
     </article>
-    <article class="feature">
-      <h3>Planifiez les rencontres</h3>
-      <p>Sélectionnez les équipes concernées, une date et un lieu : le calendrier se met à jour pour tout le monde.</p>
+    <article class="rounded-2xl border border-white/10 bg-[#090f0c] p-5">
+      <p class="text-xs uppercase tracking-[0.35em] text-emerald-200">2</p>
+      <h3 class="mt-3 text-lg font-semibold text-white">
+        Planifie les rencontres
+      </h3>
+      <p class="mt-1 text-sm text-slate-400">
+        Calendrier partagé, rappel automatique et gestion des terrains.
+      </p>
     </article>
-    <article class="feature">
-      <h3>Suivez les scores</h3>
-      <p>Renseignez les résultats dès le coup de sifflet final et gardez un historique complet de vos matchs.</p>
+    <article class="rounded-2xl border border-white/10 bg-[#090f0c] p-5">
+      <p class="text-xs uppercase tracking-[0.35em] text-emerald-200">3</p>
+      <h3 class="mt-3 text-lg font-semibold text-white">Archive les scores</h3>
+      <p class="mt-1 text-sm text-slate-400">
+        Historique détaillé et récapitulatif partagé avec ton collectif.
+      </p>
     </article>
   </div>
 </section>

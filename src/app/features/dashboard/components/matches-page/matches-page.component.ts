@@ -1,10 +1,15 @@
-import {Component, OnDestroy, OnInit, inject} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Subscription} from 'rxjs';
-import {finalize} from 'rxjs/operators';
-import {HttpErrorResponse} from '@angular/common/http';
-import {DashboardDataService} from '../../dashboard-data.service';
-import {Match} from '../../../home/home.models';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
+import { DashboardDataService } from '../../dashboard-data.service';
+import { Match } from '../../../home/home.models';
 
 interface FeedbackState {
   type: 'success' | 'error';
@@ -20,36 +25,49 @@ type ScoreFormGroup = FormGroup<{
   selector: 'app-matches-page',
   standalone: false,
   templateUrl: './matches-page.component.html',
-  styleUrls: ['./matches-page.component.scss']
+  styleUrls: ['./matches-page.component.scss'],
 })
 export class MatchesPageComponent implements OnInit, OnDestroy {
-  private readonly fb = inject(FormBuilder);
-  private readonly data = inject(DashboardDataService);
-
-  private readonly subscriptions = new Subscription();
-  private readonly scoreForms = new Map<number, ScoreFormGroup>();
-  private readonly scoreLoaders = new Map<number, boolean>();
   readonly scoreFeedbacks = new Map<number, FeedbackState>();
-
+  isCreatingMatch = false;
+  matchFeedback: FeedbackState | null = null;
+  private readonly fb = inject(FormBuilder);
+  createMatchForm = this.fb.group(
+    {
+      homeTeamId: this.fb.control<number | null>(null, {
+        validators: [Validators.required],
+      }),
+      awayTeamId: this.fb.control<number | null>(null, {
+        validators: [Validators.required],
+      }),
+      date: ['', [Validators.required]],
+      place: ['', [Validators.required, Validators.maxLength(120)]],
+    },
+    { validators: MatchesPageComponent.differentTeamsValidator },
+  );
+  private readonly data = inject(DashboardDataService);
   readonly teams$ = this.data.teams$;
   readonly matches$ = this.data.matches$;
   readonly isLoadingMatches$ = this.data.isLoadingMatches$;
+  private readonly subscriptions = new Subscription();
+  private readonly scoreForms = new Map<number, ScoreFormGroup>();
+  private readonly scoreLoaders = new Map<number, boolean>();
 
-  createMatchForm = this.fb.group(
-    {
-      homeTeamId: this.fb.control<number | null>(null, {validators: [Validators.required]}),
-      awayTeamId: this.fb.control<number | null>(null, {validators: [Validators.required]}),
-      date: ['', [Validators.required]],
-      place: ['', [Validators.required, Validators.maxLength(120)]]
-    },
-    {validators: MatchesPageComponent.differentTeamsValidator}
-  );
+  private static differentTeamsValidator(
+    group: FormGroup,
+  ): null | { sameTeams: true } {
+    const homeTeamId = group.get('homeTeamId')?.value;
+    const awayTeamId = group.get('awayTeamId')?.value;
 
-  isCreatingMatch = false;
-  matchFeedback: FeedbackState | null = null;
+    if (homeTeamId && awayTeamId && homeTeamId === awayTeamId) {
+      return { sameTeams: true };
+    }
+
+    return null;
+  }
 
   ngOnInit(): void {
-    const matchesSubscription = this.matches$.subscribe(matches => {
+    const matchesSubscription = this.matches$.subscribe((matches) => {
       for (const match of matches) {
         this.prefillScoreForm(match);
       }
@@ -74,9 +92,9 @@ export class MatchesPageComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const {homeTeamId, awayTeamId, date, place} = this.createMatchForm.value;
+    const { homeTeamId, awayTeamId, date, place } = this.createMatchForm.value;
     if (!homeTeamId || !awayTeamId) {
-      this.createMatchForm.setErrors({required: true});
+      this.createMatchForm.setErrors({ required: true });
       return;
     }
 
@@ -84,15 +102,15 @@ export class MatchesPageComponent implements OnInit, OnDestroy {
       homeTeamId,
       awayTeamId,
       date: this.toIsoString(date ?? ''),
-      place: place?.trim() ?? ''
+      place: place?.trim() ?? '',
     };
 
     if (!payload.date || !payload.place) {
       if (!payload.date) {
-        this.createMatchForm.get('date')?.setErrors({required: true});
+        this.createMatchForm.get('date')?.setErrors({ required: true });
       }
       if (!payload.place) {
-        this.createMatchForm.get('place')?.setErrors({required: true});
+        this.createMatchForm.get('place')?.setErrors({ required: true });
       }
       return;
     }
@@ -104,18 +122,22 @@ export class MatchesPageComponent implements OnInit, OnDestroy {
       .createMatch(payload)
       .pipe(finalize(() => (this.isCreatingMatch = false)))
       .subscribe({
-        next: match => {
+        next: (match) => {
           this.createMatchForm.reset();
-          this.matchFeedback = {type: 'success', message: 'Match programmé avec succès !'};
+          this.matchFeedback = {
+            type: 'success',
+            message: 'Match programmé avec succès !',
+          };
           this.prefillScoreForm(match);
         },
-        error: error => {
+        error: (error) => {
           this.matchFeedback = {
             type: 'error',
             message:
-              this.resolveHttpError(error) || 'Impossible de planifier le match pour le moment.'
+              this.resolveHttpError(error) ||
+              'Impossible de planifier le match pour le moment.',
           };
-        }
+        },
       });
 
     this.subscriptions.add(create$);
@@ -125,8 +147,12 @@ export class MatchesPageComponent implements OnInit, OnDestroy {
     let form = this.scoreForms.get(matchId);
     if (!form) {
       form = this.fb.group({
-        homeScore: this.fb.control<number | null>(null, {validators: [Validators.required, Validators.min(0)]}),
-        awayScore: this.fb.control<number | null>(null, {validators: [Validators.required, Validators.min(0)]})
+        homeScore: this.fb.control<number | null>(null, {
+          validators: [Validators.required, Validators.min(0)],
+        }),
+        awayScore: this.fb.control<number | null>(null, {
+          validators: [Validators.required, Validators.min(0)],
+        }),
       });
       this.scoreForms.set(matchId, form);
     }
@@ -143,37 +169,41 @@ export class MatchesPageComponent implements OnInit, OnDestroy {
     const homeScore = form.value.homeScore;
     const awayScore = form.value.awayScore;
     if (homeScore == null || awayScore == null) {
-      form.setErrors({required: true});
+      form.setErrors({ required: true });
       return;
     }
 
     this.scoreLoaders.set(match.id, true);
-    form.disable({emitEvent: false});
+    form.disable({ emitEvent: false });
     this.scoreFeedbacks.delete(match.id);
 
     const update$ = this.data
-      .updateScore(match.id, {homeScore: Number(homeScore), awayScore: Number(awayScore)})
+      .updateScore(match.id, {
+        homeScore: Number(homeScore),
+        awayScore: Number(awayScore),
+      })
       .pipe(
         finalize(() => {
           this.scoreLoaders.delete(match.id);
-          form.enable({emitEvent: false});
-        })
+          form.enable({ emitEvent: false });
+        }),
       )
       .subscribe({
-        next: updatedMatch => {
+        next: (updatedMatch) => {
           this.prefillScoreForm(updatedMatch);
           this.scoreFeedbacks.set(match.id, {
             type: 'success',
-            message: 'Score enregistré !'
+            message: 'Score enregistré !',
           });
         },
-        error: error => {
+        error: (error) => {
           this.scoreFeedbacks.set(match.id, {
             type: 'error',
             message:
-              this.resolveHttpError(error) || 'Impossible de mettre à jour le score pour le moment.'
+              this.resolveHttpError(error) ||
+              'Impossible de mettre à jour le score pour le moment.',
           });
-        }
+        },
       });
 
     this.subscriptions.add(update$);
@@ -188,9 +218,9 @@ export class MatchesPageComponent implements OnInit, OnDestroy {
     form.patchValue(
       {
         homeScore: match.score?.home ?? null,
-        awayScore: match.score?.away ?? null
+        awayScore: match.score?.away ?? null,
       },
-      {emitEvent: false}
+      { emitEvent: false },
     );
   }
 
@@ -216,17 +246,6 @@ export class MatchesPageComponent implements OnInit, OnDestroy {
       if (payload?.message) {
         return payload.message;
       }
-    }
-
-    return null;
-  }
-
-  private static differentTeamsValidator(group: FormGroup): null | {sameTeams: true} {
-    const homeTeamId = group.get('homeTeamId')?.value;
-    const awayTeamId = group.get('awayTeamId')?.value;
-
-    if (homeTeamId && awayTeamId && homeTeamId === awayTeamId) {
-      return {sameTeams: true};
     }
 
     return null;

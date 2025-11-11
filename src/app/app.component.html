@@ -1,15 +1,13 @@
-<div class="min-h-screen bg-slate-950 text-slate-100">
+﻿<div class="flex min-h-screen flex-col bg-[#050a07] text-slate-100">
   <app-navigation></app-navigation>
-  <main class="min-h-[calc(100vh-5rem)]">
-    <router-outlet></router-outlet>
-  </main>
-  <footer class="border-t border-white/10 bg-slate-950/80 py-8">
-    <div class="mx-auto flex max-w-6xl flex-col gap-4 px-4 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between">
-      <p>© {{ currentYear }} Footy. Tous droits réservés.</p>
-      <div class="flex flex-wrap gap-4">
-        <a class="transition hover:text-emerald-300" href="#">Politique de confidentialité</a>
-        <a class="transition hover:text-emerald-300" href="#">Conditions d'utilisation</a>
-      </div>
+
+  <main
+    class="mx-auto flex w-full max-w-6xl flex-1 px-4 pb-10 pt-6 sm:px-6 lg:px-8"
+  >
+    <div
+      class="w-full overflow-y-auto rounded-3xl border border-white/5 bg-[#070f0c] px-4 py-6 shadow-2xl shadow-black/20 sm:px-6 lg:px-8"
+    >
+      <router-outlet></router-outlet>
     </div>
-  </footer>
+  </main>
 </div>

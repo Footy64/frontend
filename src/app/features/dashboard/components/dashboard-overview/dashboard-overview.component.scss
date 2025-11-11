@@ -16,7 +16,11 @@
 }
 
 .card.emphasis {
-  background: radial-gradient(circle at top, rgba(16, 185, 129, 0.12), rgba(59, 130, 246, 0.08));
+  background: radial-gradient(
+    circle at top,
+    rgba(16, 185, 129, 0.12),
+    rgba(59, 130, 246, 0.08)
+  );
   color: rgb(15, 23, 42);
 }
 
@@ -53,7 +57,9 @@
   border: 1px solid rgba(148, 163, 184, 0.3);
   text-decoration: none;
   color: rgb(15, 23, 42);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .quick-action:hover {

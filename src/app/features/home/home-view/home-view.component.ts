@@ -1,12 +1,12 @@
-import {Component, inject} from '@angular/core';
-import {Router} from '@angular/router';
-import {AuthStateService} from '../../auth/auth-state.service';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthStateService } from '../../auth/auth-state.service';
 
 @Component({
   selector: 'app-home-view',
   standalone: false,
   templateUrl: './home-view.component.html',
-  styleUrls: ['./home-view.component.scss']
+  styleUrls: ['./home-view.component.scss'],
 })
 export class HomeViewComponent {
   private readonly router = inject(Router);

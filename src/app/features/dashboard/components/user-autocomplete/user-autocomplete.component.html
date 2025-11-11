@@ -1,0 +1,70 @@
+<div class="autocomplete">
+  <label [attr.for]="inputId" class="autocomplete__label">{{ label }}</label>
+
+  <div
+    [class.autocomplete__input-wrapper--disabled]="disabled"
+    [class.autocomplete__input-wrapper--open]="isOpen"
+    class="autocomplete__input-wrapper"
+  >
+    <span aria-hidden="true" class="autocomplete__leading-icon">
+      <svg
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        viewBox="0 0 24 24"
+      >
+        <circle cx="11" cy="11" r="7" />
+        <path d="m16.5 16.5 4 4" />
+      </svg>
+    </span>
+    <input
+      (blur)="handleBlur()"
+      (focus)="handleFocus()"
+      [disabled]="disabled"
+      [formControl]="searchControl"
+      [id]="inputId"
+      [placeholder]="placeholder"
+      autocomplete="off"
+      class="autocomplete__input"
+      type="text"
+    />
+    <button
+      (click)="clear()"
+      *ngIf="searchControl.value"
+      [disabled]="disabled"
+      aria-label="Effacer la recherche"
+      class="autocomplete__clear"
+      type="button"
+    >
+      &times;
+    </button>
+  </div>
+
+  <p *ngIf="!error" class="autocomplete__hint">{{ hint }}</p>
+  <p *ngIf="error" class="autocomplete__error">{{ error }}</p>
+
+  <div *ngIf="isOpen" class="autocomplete__panel">
+    <p *ngIf="isLoading" class="autocomplete__state">Recherche en cours...</p>
+
+    <ng-container *ngIf="!isLoading">
+      <button
+        (mousedown)="selectUser(suggestion); $event.preventDefault()"
+        *ngFor="let suggestion of suggestions; trackBy: trackByUserId"
+        class="autocomplete__option"
+        type="button"
+      >
+        <div class="autocomplete__option-details">
+          <span class="autocomplete__option-name">{{
+            suggestion.displayName || suggestion.email
+          }}</span>
+          <span class="autocomplete__option-email">{{ suggestion.email }}</span>
+        </div>
+        <span aria-hidden="true" class="autocomplete__option-action">+</span>
+      </button>
+
+      <p *ngIf="!suggestions.length" class="autocomplete__state">
+        Aucun joueur trouvé
+      </p>
+    </ng-container>
+  </div>
+</div>

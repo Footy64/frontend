@@ -1,9 +1,14 @@
-import {Component, inject} from '@angular/core';
-import {AbstractControl, FormBuilder, ValidationErrors, Validators} from '@angular/forms';
-import {AuthService} from '../auth.service';
-import {HttpErrorResponse} from '@angular/common/http';
-import {Router} from '@angular/router';
-import {finalize} from 'rxjs';
+import { Component, inject } from '@angular/core';
+import {
+  AbstractControl,
+  FormBuilder,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
+import { AuthService } from '../auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { finalize } from 'rxjs';
 
 type FeedbackState = {
   type: 'success' | 'error';
@@ -14,34 +19,41 @@ type FeedbackState = {
   selector: 'app-register-view',
   standalone: false,
   templateUrl: './register-view.component.html',
-  styleUrl: './register-view.component.scss'
+  styleUrl: './register-view.component.scss',
 })
 export class RegisterViewComponent {
-  private readonly fb: FormBuilder = inject(FormBuilder);
-  private readonly authService: AuthService = inject(AuthService);
-  private readonly router: Router = inject(Router);
-
   isSubmitting = false;
   feedback: FeedbackState | null = null;
   passwordVisible = false;
-
+  private readonly fb: FormBuilder = inject(FormBuilder);
   registerForm = this.fb.group(
     {
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(72)]],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(72),
+        ],
+      ],
       confirmPassword: ['', [Validators.required]],
       displayName: [''],
       newsletter: [true],
-      terms: [false, Validators.requiredTrue]
+      terms: [false, Validators.requiredTrue],
     },
-    {validators: RegisterViewComponent.passwordsMatchValidator}
+    { validators: RegisterViewComponent.passwordsMatchValidator },
   );
+  private readonly authService: AuthService = inject(AuthService);
+  private readonly router: Router = inject(Router);
 
-  static passwordsMatchValidator(control: AbstractControl): ValidationErrors | null {
+  static passwordsMatchValidator(
+    control: AbstractControl,
+  ): ValidationErrors | null {
     const password = control.get('password')?.value;
     const confirm = control.get('confirmPassword')?.value;
     if (password && confirm && password !== confirm) {
-      return {passwordMismatch: true};
+      return { passwordMismatch: true };
     }
 
     return null;
@@ -62,7 +74,7 @@ export class RegisterViewComponent {
     const dto = {
       email: this.registerForm.value.email!,
       password: this.registerForm.value.password!,
-      displayName: this.registerForm.value.displayName || undefined
+      displayName: this.registerForm.value.displayName || undefined,
     };
 
     this.feedback = null;
@@ -75,7 +87,8 @@ export class RegisterViewComponent {
         next: () => {
           this.feedback = {
             type: 'success',
-            message: 'Votre compte a été créé avec succès ! Vous allez être redirigé vers la connexion.'
+            message:
+              'Votre compte a été créé avec succès ! Vous allez être redirigé vers la connexion.',
           };
           setTimeout(() => {
             this.router.navigate(['/auth/login']);
@@ -86,9 +99,9 @@ export class RegisterViewComponent {
             type: 'error',
             message:
               this.resolveErrorMessage(error) ||
-              'Impossible de créer le compte pour le moment. Merci de réessayer plus tard.'
+              'Impossible de créer le compte pour le moment. Merci de réessayer plus tard.',
           };
-        }
+        },
       });
   }
 

@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export interface AuthUser {
   id: number;
@@ -13,17 +13,22 @@ export interface SetSessionOptions {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthStateService {
   private readonly tokenStorageKey = 'footy.auth.token';
   private readonly userStorageKey = 'footy.auth.user';
-  private readonly tokenSubject = new BehaviorSubject<string | null>(this.restoreToken());
-  private readonly userSubject = new BehaviorSubject<AuthUser | null>(this.restoreUser());
-
+  private readonly tokenSubject = new BehaviorSubject<string | null>(
+    this.restoreToken(),
+  );
   readonly token$: Observable<string | null> = this.tokenSubject.asObservable();
+  readonly isAuthenticated$: Observable<boolean> = this.token$.pipe(
+    map((token) => !!token),
+  );
+  private readonly userSubject = new BehaviorSubject<AuthUser | null>(
+    this.restoreUser(),
+  );
   readonly user$: Observable<AuthUser | null> = this.userSubject.asObservable();
-  readonly isAuthenticated$: Observable<boolean> = this.token$.pipe(map(token => !!token));
 
   get token(): string | null {
     return this.tokenSubject.value;
@@ -33,7 +38,11 @@ export class AuthStateService {
     return this.userSubject.value;
   }
 
-  setSession(token: string, user: AuthUser | null, options: SetSessionOptions = {}): void {
+  setSession(
+    token: string,
+    user: AuthUser | null,
+    options: SetSessionOptions = {},
+  ): void {
     const remember = options.remember ?? true;
     this.persistToken(token, remember);
     this.persistUser(user, remember);
@@ -41,7 +50,10 @@ export class AuthStateService {
     this.userSubject.next(user);
   }
 
-  setSessionFromResponse(response: unknown, options: SetSessionOptions = {}): boolean {
+  setSessionFromResponse(
+    response: unknown,
+    options: SetSessionOptions = {},
+  ): boolean {
     const token = this.extractToken(response);
     if (!token) {
       console.warn('No token found in authentication response');
@@ -64,7 +76,10 @@ export class AuthStateService {
       return null;
     }
 
-    return localStorage.getItem(this.tokenStorageKey) || sessionStorage.getItem(this.tokenStorageKey);
+    return (
+      localStorage.getItem(this.tokenStorageKey) ||
+      sessionStorage.getItem(this.tokenStorageKey)
+    );
   }
 
   private restoreUser(): AuthUser | null {
@@ -73,7 +88,8 @@ export class AuthStateService {
     }
 
     const storedValue =
-      localStorage.getItem(this.userStorageKey) || sessionStorage.getItem(this.userStorageKey);
+      localStorage.getItem(this.userStorageKey) ||
+      sessionStorage.getItem(this.userStorageKey);
 
     if (!storedValue) {
       return null;
@@ -85,7 +101,8 @@ export class AuthStateService {
         return {
           id: parsed.id,
           email: parsed.email,
-          displayName: parsed.displayName ?? parsed.name ?? parsed.fullName ?? null
+          displayName:
+            parsed.displayName ?? parsed.name ?? parsed.fullName ?? null,
         } as AuthUser;
       }
     } catch (error) {
@@ -190,7 +207,10 @@ export class AuthStateService {
   }
 
   private toAuthUser(candidate: Record<string, unknown>): AuthUser | null {
-    if (typeof candidate['id'] === 'number' && typeof candidate['email'] === 'string') {
+    if (
+      typeof candidate['id'] === 'number' &&
+      typeof candidate['email'] === 'string'
+    ) {
       return {
         id: candidate['id'] as number,
         email: candidate['email'] as string,
@@ -201,7 +221,7 @@ export class AuthStateService {
               ? (candidate['name'] as string)
               : typeof candidate['fullName'] === 'string'
                 ? (candidate['fullName'] as string)
-                : null
+                : null,
       };
     }
 

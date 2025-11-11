@@ -1,43 +1,86 @@
-<section class="dashboard">
-  <div class="dashboard__hero">
-    <div class="dashboard__hero-background"></div>
-    <div class="dashboard__hero-content">
-      <p class="dashboard__eyebrow">Tableau de bord</p>
-      <h1>Organisez vos compétitions en toute sérénité</h1>
-      <p>
-        <ng-container *ngIf="user$ | async as user; else guestWelcome">
-          Heureux de vous revoir, {{ user.displayName || user.email }} !
-        </ng-container>
-      </p>
-      <ng-template #guestWelcome>
-        Connectez-vous pour accéder à la gestion des équipes et des matchs.
-      </ng-template>
-    </div>
-    <ng-container *ngIf="(teams$ | async) as teams">
-      <ng-container *ngIf="(matches$ | async) as matches">
-        <div class="dashboard__hero-stats">
-          <div class="dashboard__stat">
-            <span class="dashboard__stat-value">{{ teams.length }}</span>
-            <span class="dashboard__stat-label">Équipes</span>
-          </div>
-          <div class="dashboard__stat">
-            <span class="dashboard__stat-value">{{ matches.length }}</span>
-            <span class="dashboard__stat-label">Matchs programmés</span>
-          </div>
+<section class="space-y-8">
+  <div
+    class="rounded-3xl border border-white/10 bg-[#0a120f] px-6 py-8 sm:px-10"
+  >
+    <div
+      class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between"
+    >
+      <div class="space-y-2">
+        <p class="text-xs uppercase tracking-[0.35em] text-emerald-200">
+          Tableau de bord
+        </p>
+        <h1 class="text-3xl font-semibold text-white">
+          Supervise tes équipes et matchs en un coup d'œil
+        </h1>
+        <p class="text-sm text-slate-400">
+          <ng-container *ngIf="user$ | async as user; else guest"
+            >Bienvenue, {{ user.displayName || user.email }}.
+          </ng-container>
+        </p>
+        <ng-template #guest
+          >Connecte-toi pour synchroniser tes données Footy.</ng-template
+        >
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div
+          class="rounded-2xl border border-white/10 bg-[#090f0c] px-5 py-4 text-center"
+        >
+          <p class="text-xs uppercase tracking-[0.35em] text-slate-400">
+            Équipes
+          </p>
+          <p class="mt-2 text-3xl font-semibold text-white">
+            {{ (teams$ | async)?.length ?? 0 }}
+          </p>
         </div>
-      </ng-container>
-    </ng-container>
+        <div
+          class="rounded-2xl border border-white/10 bg-[#090f0c] px-5 py-4 text-center"
+        >
+          <p class="text-xs uppercase tracking-[0.35em] text-slate-400">
+            Matchs
+          </p>
+          <p class="mt-2 text-3xl font-semibold text-white">
+            {{ (matches$ | async)?.length ?? 0 }}
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <nav class="dashboard__tabs">
-    <a routerLink="overview" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact: true}">Vue d'ensemble</a>
-    <a routerLink="teams" routerLinkActive="is-active">Équipes</a>
-    <a routerLink="matches" routerLinkActive="is-active">Matchs</a>
+  <nav class="flex flex-wrap gap-3">
+    <a
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="rounded-full border border-white/10 px-4 py-2 text-sm text-slate-300 transition hover:border-emerald-300"
+      routerLink="overview"
+      routerLinkActive="!bg-white/10 text-white"
+      >Vue d'ensemble</a
+    >
+    <a
+      class="rounded-full border border-white/10 px-4 py-2 text-sm text-slate-300 transition hover:border-emerald-300"
+      routerLink="teams"
+      routerLinkActive="!bg-white/10 text-white"
+      >Équipes</a
+    >
+    <a
+      class="rounded-full border border-white/10 px-4 py-2 text-sm text-slate-300 transition hover:border-emerald-300"
+      routerLink="matches"
+      routerLinkActive="!bg-white/10 text-white"
+      >Matchs</a
+    >
+    <button
+      (click)="refreshAll()"
+      *ngIf="dataError"
+      class="ml-auto rounded-full border border-rose-400/30 px-4 py-2 text-sm text-rose-200"
+      type="button"
+    >
+      Recharger
+    </button>
   </nav>
 
-  <div *ngIf="dataError" class="dashboard__error">
-    <p>{{ dataError }}</p>
-    <button type="button" (click)="refreshAll()">Réessayer</button>
+  <div
+    *ngIf="dataError"
+    class="rounded-2xl border border-rose-400/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200"
+  >
+    {{ dataError }}
   </div>
 
   <router-outlet></router-outlet>
