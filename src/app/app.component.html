@@ -1,16 +1,18 @@
 <div class="app-shell">
   <div class="app-shell__backdrop" aria-hidden="true"></div>
 
-  <app-navigation></app-navigation>
+  <div class="app-shell__layout">
+    <app-navigation class="app-shell__nav"></app-navigation>
 
-  <main class="app-shell__main">
-    <div class="app-shell__grid">
-      <div class="app-shell__glow app-shell__glow--left" aria-hidden="true"></div>
-      <div class="app-shell__glow app-shell__glow--right" aria-hidden="true"></div>
+    <main class="app-shell__main">
+      <div class="app-shell__grid">
+        <div class="app-shell__glow app-shell__glow--left" aria-hidden="true"></div>
+        <div class="app-shell__glow app-shell__glow--right" aria-hidden="true"></div>
 
-      <section class="app-shell__content">
-        <router-outlet></router-outlet>
-      </section>
-    </div>
-  </main>
+        <section class="app-shell__content">
+          <router-outlet></router-outlet>
+        </section>
+      </div>
+    </main>
+  </div>
 </div>

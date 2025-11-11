@@ -2,14 +2,18 @@
   display: block;
   position: sticky;
   top: 0;
-  z-index: 20;
+  left: 0;
+  right: 0;
+  z-index: 50;
 }
 
 .app-nav {
+  width: 100%;
   position: relative;
   backdrop-filter: blur(16px);
-  background: rgba(5, 11, 9, 0.72);
+  background: rgba(5, 11, 9, 0.78);
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 
 .app-nav__bar {
@@ -146,10 +150,10 @@
 .app-nav__drawer {
   position: absolute;
   inset: 100% 0 auto;
-  background: rgba(3, 6, 5, 0.85);
+  background: rgba(3, 6, 5, 0.9);
   border-bottom-left-radius: 28px;
   border-bottom-right-radius: 28px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .app-nav__drawer-panel {
